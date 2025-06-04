@@ -5,6 +5,9 @@ return {
       sources = {
         explorer = {
           diagnostics = false,
+          hidden = true,
+          ignored = true,
+          exclude = { ".git", "**/.DS_Store" },
         },
       },
     },
