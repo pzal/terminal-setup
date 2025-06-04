@@ -108,9 +108,8 @@ else
   fi
 fi
 
-# Set up .zshrc
-ZSHRC_PATH="$HOME/.zshrc"
-mv .p10k.zsh $ZSHRC_PATH
+mv .p10k.zsh $HOME/.p10k.zsh
+mv .zshrc $HOME/.zshrc
 
 # Setup up neovim
 mkdir -p ~/.config
