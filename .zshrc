@@ -89,10 +89,10 @@ if [[ "$(uname)" == "Darwin" ]]; then
   }
 fi
 
+# To fix `del` key in kitty.
+export TERM=xterm
+
 # export LS_COLORS="$(vivid generate catppuccin-latte)"
-# # To fix `del` key in kitty.
-# export TERM=xterm
-#
 #
 # if [[ "$(uname)" == "Darwin" ]]; then
 #   alias ls="gls --color" # Just to fix the colors.
