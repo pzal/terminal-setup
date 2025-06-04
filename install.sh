@@ -79,32 +79,6 @@ else
   fi
 fi
 
-echo "Installing Sobolev Zsh Theme..."
-
-THEME_REPO="https://github.com/sobolevn/sobole-zsh-theme.git"
-THEME_NAME="sobole-zsh-theme"
-CLONE_DIR="$HOME/.oh-my-zsh/custom/themes/$THEME_NAME"
-LINK_TARGET="$CLONE_DIR/sobole.zsh-theme"
-LINK_NAME="$HOME/.oh-my-zsh/custom/themes/sobole.zsh-theme"
-
-if [ -d "$CLONE_DIR" ]; then
-  echo "Sobolev Zsh Theme is already installed. Skipping clone."
-else
-  if git clone "$THEME_REPO" "$CLONE_DIR"; then
-    echo "Successfully cloned Sobolev Zsh Theme."
-  else
-    echo "Failed to clone Sobolev Zsh Theme." >&2
-    exit 1
-  fi
-fi
-if [ -L "$LINK_NAME" ]; then
-  echo "Symbolic link already exists. Skipping linking."
-elif [ -e "$LINK_NAME" ]; then
-  echo "A file named sobole.zsh-theme already exists at the link location. Skipping linking." >&2
-else
-  ln -s "$LINK_TARGET" "$LINK_NAME" && echo "Successfully linked sobole.zsh-theme."
-fi
-
 mv .zshrc $HOME/.zshrc
 
 # Setup up neovim
