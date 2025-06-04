@@ -79,20 +79,32 @@ else
   fi
 fi
 
-# Clone Powerlevel10k theme into Oh My Zsh custom themes directory
-echo "Installing Powerlevel10k..."
-THEME_DIR="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
-if [ -d "$THEME_DIR" ]; then
-  echo "Powerlevel10k is already installed. Skipping this step."
+echo "Installing Sobolev Zsh Theme..."
+
+THEME_REPO="https://github.com/sobolevn/sobole-zsh-theme.git"
+THEME_NAME="sobole-zsh-theme"
+CLONE_DIR="$HOME/.oh-my-zsh/custom/themes/$THEME_NAME"
+LINK_TARGET="$CLONE_DIR/sobole.zsh-theme"
+LINK_NAME="$HOME/.oh-my-zsh/custom/themes/sobole.zsh-theme"
+
+if [ -d "$CLONE_DIR" ]; then
+  echo "Sobolev Zsh Theme is already installed. Skipping clone."
 else
-  if ! git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$THEME_DIR"; then
-    warn "Failed to install Powerlevel10k."
+  if git clone "$THEME_REPO" "$CLONE_DIR"; then
+    echo "Successfully cloned Sobolev Zsh Theme."
   else
-    echo "Successfully installed Powerlevel10k."
+    echo "Failed to clone Sobolev Zsh Theme." >&2
+    exit 1
   fi
 fi
+if [ -L "$LINK_NAME" ]; then
+  echo "Symbolic link already exists. Skipping linking."
+elif [ -e "$LINK_NAME" ]; then
+  echo "A file named sobole.zsh-theme already exists at the link location. Skipping linking." >&2
+else
+  ln -s "$LINK_TARGET" "$LINK_NAME" && echo "Successfully linked sobole.zsh-theme."
+fi
 
-mv .p10k.zsh $HOME/.p10k.zsh
 mv .zshrc $HOME/.zshrc
 
 # Setup up neovim

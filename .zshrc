@@ -1,14 +1,7 @@
 
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
 export ZSH="$HOME/.oh-my-zsh"
 
-ZSH_THEME="powerlevel10k/powerlevel10k"
+ZSH_THEME="sobole"
 
 export UPDATE_ZSH_DAYS=30
 
@@ -40,9 +33,6 @@ HISTFILE=~/.zsh_history
 HISTSIZE=1000000
 SAVEHIST=$HISTSIZE
 
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 if [[ "$(uname)" == "Darwin" ]]; then
   ICLOUD_PATH=~/Library/Mobile\ Documents/com~apple~CloudDocs
@@ -91,10 +81,4 @@ fi
 
 # To fix `del` key in kitty.
 export TERM=xterm
-
-# export LS_COLORS="$(vivid generate catppuccin-latte)"
-#
-# if [[ "$(uname)" == "Darwin" ]]; then
-#   alias ls="gls --color" # Just to fix the colors.
-# fi
 
