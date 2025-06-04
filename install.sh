@@ -92,22 +92,6 @@ else
   fi
 fi
 
-# Set Powerlevel10k as the default theme in the .zshrc file
-echo "Setting Powerlevel10k as the default theme..."
-if grep -q "^ZSH_THEME=" "$HOME/.zshrc"; then
-  if ! sed -i 's/^ZSH_THEME=.*/ZSH_THEME="powerlevel10k\/powerlevel10k"/' "$HOME/.zshrc"; then
-    warn "Failed to set Powerlevel10k as the default theme in .zshrc."
-  else
-    echo "Successfully set Powerlevel10k as the default theme."
-  fi
-else
-  if ! echo 'ZSH_THEME="powerlevel10k/powerlevel10k"' >>"$HOME/.zshrc"; then
-    warn "Failed to add Powerlevel10k as the default theme in .zshrc."
-  else
-    echo "Successfully added Powerlevel10k as the default theme to .zshrc."
-  fi
-fi
-
 mv .p10k.zsh $HOME/.p10k.zsh
 mv .zshrc $HOME/.zshrc
 
