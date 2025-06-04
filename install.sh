@@ -96,7 +96,8 @@ mv .p10k.zsh $HOME/.p10k.zsh
 mv .zshrc $HOME/.zshrc
 
 # Setup up neovim
-mkdir -p ~/.config
+mkdir -p ~/.config/nvim
+rm -rf ~/config/nvim
 mv nvim ~/.config/nvim
 
 echo -e "\nSetup is complete! Please restart your terminal or run 'exec zsh' to start using Zsh with Powerlevel10k and Oh My Zsh."
