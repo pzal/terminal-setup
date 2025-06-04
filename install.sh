@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+if [[ "$(uname)" == "Darwin" ]]; then
+  ./install_deps.mac.sh
+else
+  ./install_deps.ubuntu.sh
+fi
+
 # Function to log warnings
 function warn {
   echo "Warning: $1"
