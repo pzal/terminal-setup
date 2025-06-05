@@ -79,6 +79,11 @@ else
   fi
 fi
 
+# Node
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+\. "$HOME/.nvm/nvm.sh" # in lieu of restarting the shell
+nvm install 22
+
 mv .zshrc $HOME/.zshrc
 
 # Setup up neovim
