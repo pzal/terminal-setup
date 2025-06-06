@@ -89,13 +89,18 @@ npm i --global @devcontainers/cli
 
 mv .zshrc $HOME/.zshrc
 
+mkdir -p ~/.config
+
 # Setup up neovim
-mkdir -p ~/.config/nvim
-rm -rf ~/.config/nvim
+rm -rf ~/.config/nvim || true
 mv nvim ~/.config/nvim
 
 # Setup tmux
-rm ~/.tmux.conf || true # Ensure there's no default conf.
+rm ~/.tmux.conf || true
 mv tmux ~/.config/tmux
+
+# Setup kitty
+rm -rf ~/.config/kitty || true
+mv kitty ~/.config/kitty
 
 echo -e "\nSetup is complete! Please restart your terminal or run 'exec zsh' to start using Zsh with Powerlevel10k and Oh My Zsh."
