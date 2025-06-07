@@ -3,3 +3,5 @@
 -- Add any additional options here
 
 vim.diagnostic.enable(false)
+vim.opt.maxmempattern = 2000000
+vim.api.nvim_set_option("clipboard", "unnamedplus")
