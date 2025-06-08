@@ -386,6 +386,10 @@ require('lazy').setup({
   {
     -- Main LSP Configuration
     'neovim/nvim-lspconfig',
+    cond = function()
+      local ok, vscode = pcall(require, 'vscode')
+      return not ok
+    end,
     dependencies = {
       -- Automatically install LSPs and related tools to stdpath for Neovim
       -- Mason must be loaded before its dependents so we need to set it up here.
@@ -695,6 +699,10 @@ require('lazy').setup({
     'saghen/blink.cmp',
     event = 'VimEnter',
     version = '1.*',
+    cond = function()
+      local ok, vscode = pcall(require, 'vscode')
+      return not ok
+    end,
     dependencies = {
       -- Snippet Engine
       {
@@ -836,7 +844,14 @@ require('lazy').setup({
         close_on_select = true,
       }
       -- You probably also want to set a keymap to toggle aerial
-      vim.keymap.set('n', '<leader>a', '<cmd>AerialToggle<CR>')
+      vim.keymap.set('n', '<leader>a', function()
+        local ok, vscode = pcall(require, 'vscode')
+        if ok then
+          vscode.call 'outline.focus'
+        else
+          aerial.AerialToggle()
+        end
+      end)
     end,
   },
 
@@ -1007,7 +1022,12 @@ require('lazy').setup({
       {
         '<leader>p',
         function()
-          Snacks.picker.yanky()
+          local ok, vscode = pcall(require, 'vscode')
+          if ok then
+            vscode.call 'clipring.selectAndPasteRingItem'
+          else
+            Snacks.picker.yanky()
+          end
         end,
         mode = { 'n', 'x' },
         desc = 'Open Yank History',
