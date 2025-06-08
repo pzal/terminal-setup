@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 sudo apt update
 sudo apt install -y \
-  vivid git curl build-essential neovim fzf ripgrep fd-find wget
+  vivid git curl build-essential neovim fzf ripgrep fd-find wget tmux
 
 # Neovim
 wget -O /tmp/nvim.tar.gz https://github.com/neovim/neovim/releases/download/v0.11.2/nvim-linux-x86_64.tar.gz &&
