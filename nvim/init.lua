@@ -74,7 +74,7 @@ vim.o.inccommand = 'split'
 vim.o.cursorline = true
 
 -- Minimal number of screen lines to keep above and below the cursor.
-vim.o.scrolloff = 5
+vim.o.scrolloff = 3
 
 -- if performing an operation that would fail due to unsaved changes in the buffer (like `:q`),
 -- instead raise a dialog asking if you wish to save the current file(s)
@@ -845,86 +845,137 @@ require('lazy').setup({
     { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
     { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
     { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
-    { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+    { "r", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
     { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
   },
-  },
-  { -- Collection of various small independent plugins/modules
-    'echasnovski/mini.nvim',
-    config = function()
-      require('mini.pairs').setup()
-      -- require('mini.files').setup {
-      --   vim.keymap.set('n', '<leader>sf', require('mini.files').open, { desc = '[S]earch [F]ilesystem' }),
-      --   use_as_default_explorer = true,
-      -- }
-      -- Better Around/Inside textobjects
-      --
-      -- Examples:
-      --  - va)  - [V]isually select [A]round [)]paren
-      --  - yinq - [Y]ank [I]nside [N]ext [Q]uote
-      --  - ci'  - [C]hange [I]nside [']quote
-      require('mini.ai').setup { n_lines = 500 }
+    { -- Collection of various small independent plugins/modules
+      'echasnovski/mini.nvim',
+      config = function()
+        require('mini.pairs').setup()
+        -- require('mini.files').setup {
+        --   vim.keymap.set('n', '<leader>sf', require('mini.files').open, { desc = '[S]earch [F]ilesystem' }),
+        --   use_as_default_explorer = true,
+        -- }
+        -- Better Around/Inside textobjects
+        --
+        -- Examples:
+        --  - va)  - [V]isually select [A]round [)]paren
+        --  - yinq - [Y]ank [I]nside [N]ext [Q]uote
+        --  - ci'  - [C]hange [I]nside [']quote
+        -- require('mini.ai').setup { n_lines = 500 }
 
-      -- Add/delete/replace surroundings (brackets, quotes, etc.)
-      --
-      -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
-      -- - sd'   - [S]urround [D]elete [']quotes
-      -- - sr)'  - [S]urround [R]eplace [)] [']
-      require('mini.surround').setup()
+        -- Add/delete/replace surroundings (brackets, quotes, etc.)
+        --
+        -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
+        -- - sd'   - [S]urround [D]elete [']quotes
+        -- - sr)'  - [S]urround [R]eplace [)] [']
+        -- require('mini.surround').setup()
 
-      -- Simple and easy statusline.
-      --  You could remove this setup call if you don't like it,
-      --  and try some other statusline plugin
-      local statusline = require 'mini.statusline'
-      -- set use_icons to true if you have a Nerd Font
-      statusline.setup { use_icons = vim.g.have_nerd_font }
+        -- Simple and easy statusline.
+        --  You could remove this setup call if you don't like it,
+        --  and try some other statusline plugin
+        local statusline = require 'mini.statusline'
+        -- set use_icons to true if you have a Nerd Font
+        statusline.setup { use_icons = vim.g.have_nerd_font }
 
-      -- You can configure sections in the statusline by overriding their
-      -- default behavior. For example, here we set the section for
-      -- cursor location to LINE:COLUMN
-      ---@diagnostic disable-next-line: duplicate-set-field
-      statusline.section_location = function()
-        return '%2l:%-2v'
-      end
+        -- You can configure sections in the statusline by overriding their
+        -- default behavior. For example, here we set the section for
+        -- cursor location to LINE:COLUMN
+        ---@diagnostic disable-next-line: duplicate-set-field
+        statusline.section_location = function()
+          return '%2l:%-2v'
+        end
 
-      -- ... and there is more!
-      --  Check out: https://github.com/echasnovski/mini.nvim
-    end,
-  },
-  {
-    'folke/snacks.nvim',
-    ---@type snacks.Config
-    priority = 1000,
-    lazy = false,
-    opts = {
-      explorer = {
-        replace_netrw = true,
-      },
-      picker = {
-        sources = {
-          explorer = {
-            diagnostics = false,
-            hidden = true,
-            ignored = true,
-            exclude = { '.git', '**/.DS_Store' },
+        -- ... and there is more!
+        --  Check out: https://github.com/echasnovski/mini.nvim
+      end,
+    },
+    {
+      'kylechui/nvim-surround',
+      version = '^3.1.0', -- Use for stability; omit to use `main` branch for the latest features
+      event = 'VeryLazy',
+      config = function()
+        require('nvim-surround').setup {
+          -- Configuration here, or leave empty to use defaults
+        }
+      end,
+    },
+
+    {
+      'folke/snacks.nvim',
+      ---@type snacks.Config
+      priority = 1000,
+      lazy = false,
+      opts = {
+        explorer = {
+          replace_netrw = true,
+        },
+        picker = {
+          sources = {
+            -- explorer = {
+            --   diagnostics = false,
+            --   hidden = false,
+            --   ignored = true,
+            --   exclude = { '.git', '**/.DS_Store' },
+            --   win = {
+            --     list = {
+            --       wo = {
+            --         number = true, -- Enable line numbers
+            --         relativenumber = true, -- Enable relative line numbers
+            --       },
+            --     },
+            --   },
+            -- },
+            explorer = {
+              diagnostics = false,
+              hidden = true,
+              ignored = false,
+              exclude = { '.git', '**/.DS_Store' },
+              auto_close = true,
+              layout = {
+                { preview = true },
+                layout = {
+                  box = 'horizontal',
+                  width = 0.8,
+                  height = 0.8,
+                  {
+                    box = 'vertical',
+                    border = 'rounded',
+                    title = '{source} {live} {flags}',
+                    title_pos = 'center',
+                    { win = 'input', height = 1, border = 'bottom' },
+                    { win = 'list', border = 'none' },
+                  },
+                  { win = 'preview', border = 'rounded', width = 0.7, title = '{preview}' },
+                },
+              },
+              win = {
+                list = {
+                  wo = {
+                    number = true,
+                    relativenumber = true,
+                  },
+                },
+              },
+            },
           },
         },
       },
-    },
-    keys = {
-      {
-        '<leader>e',
-        function()
-          Snacks.explorer()
-        end,
-        desc = 'File Explorer',
-      },
-      {
-        '<leader>gg',
-        function()
-          Snacks.lazygit()
-        end,
-        desc = 'Lazygit',
+      keys = {
+        {
+          '<leader>e',
+          function()
+            Snacks.explorer()
+          end,
+          desc = 'File Explorer',
+        },
+        {
+          '<leader>gg',
+          function()
+            Snacks.lazygit()
+          end,
+          desc = 'Lazygit',
+        },
       },
     },
   },
