@@ -386,10 +386,10 @@ require("lazy").setup({
 	{
 		-- Main LSP Configuration
 		"neovim/nvim-lspconfig",
-		-- cond = function()
-		--   local ok, vscode = pcall(require, 'vscode')
-		--   return not ok
-		-- end,
+		cond = function()
+			local ok, vscode = pcall(require, "vscode")
+			return not ok
+		end,
 		dependencies = {
 			-- Automatically install LSPs and related tools to stdpath for Neovim
 			-- Mason must be loaded before its dependents so we need to set it up here.
@@ -434,6 +434,7 @@ require("lazy").setup({
 			--    That is to say, every time a new file is opened that is associated with
 			--    an lsp (for example, opening `main.rs` is associated with `rust_analyzer`) this
 			--    function will be executed to configure the current buffer
+			local ok, vscode = pcall(require, "vscode")
 			vim.api.nvim_create_autocmd("LspAttach", {
 				group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
 				callback = function(event)
@@ -590,7 +591,11 @@ require("lazy").setup({
 			--  By default, Neovim doesn't support everything that is in the LSP specification.
 			--  When you add blink.cmp, luasnip, etc. Neovim now has *more* capabilities.
 			--  So, we create new capabilities with blink.cmp, and then broadcast that to the servers.
-			local capabilities = require("blink.cmp").get_lsp_capabilities()
+			if not ok then
+				local capabilities {}
+			else
+				local capabilities = require("blink.cmp").get_lsp_capabilities()
+			end
 
 			-- Enable the following language servers
 			--  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
@@ -659,7 +664,7 @@ require("lazy").setup({
 						-- This handles overriding only values explicitly passed
 						-- by the server configuration above. Useful when disabling
 						-- certain features of an LSP (for example, turning off formatting for ts_ls)
-            server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+						server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
 						require("lspconfig")[server_name].setup(server)
 					end,
 				},
@@ -671,6 +676,10 @@ require("lazy").setup({
 		"stevearc/conform.nvim",
 		event = { "BufWritePre" },
 		cmd = { "ConformInfo" },
+		cond = function()
+			local ok, vscode = pcall(require, "vscode")
+			return not ok
+		end,
 		keys = {
 			{
 				"<leader>f",
@@ -713,6 +722,10 @@ require("lazy").setup({
 		"saghen/blink.cmp",
 		event = "VimEnter",
 		version = "1.*",
+		cond = function()
+			local ok, vscode = pcall(require, "vscode")
+			return not ok
+		end,
 		dependencies = {
 			-- Snippet Engine
 			{
