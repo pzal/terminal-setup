@@ -9,6 +9,7 @@ plugins=(
     colored-man-pages
     docker
     docker-compose
+    zsh-vi-mode
 )
 
 source $ZSH/oh-my-zsh.sh
