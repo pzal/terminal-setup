@@ -121,6 +121,15 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     vim.hl.on_yank()
   end,
 })
+-- Autocommand to enable line numbers in help buffers
+vim.api.nvim_create_autocmd('FileType', {
+  -- group = help_group,
+  pattern = 'help',
+  callback = function()
+    vim.opt_local.number = true
+    vim.opt_local.relativenumber = true
+  end,
+})
 
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
@@ -457,6 +466,7 @@ require('lazy').setup({
           --  This is where a variable was first declared, or where a function is defined, etc.
           --  To jump back, press <C-t>.
           map('grd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
+          map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
 
           -- WARN: This is not Goto Definition, this is Goto Declaration.
           --  For example, in C this would take you to the header.
@@ -464,7 +474,14 @@ require('lazy').setup({
 
           -- Fuzzy find all the symbols in your current document.
           --  Symbols are things like variables, functions, types, etc.
-          map('gO', require('telescope.builtin').lsp_document_symbols, 'Open Document Symbols')
+          map('gO', function()
+            require('telescope.builtin').lsp_document_symbols {
+              symbols = { 'class', 'method', 'function' },
+              -- symbol_highlights = {
+              --   class = 'Cursor',
+              -- },
+            }
+          end, 'Open Document Symbols')
 
           -- Fuzzy find all the symbols in your current workspace.
           --  Similar to document symbols, except searches over your entire project.
@@ -811,181 +828,160 @@ require('lazy').setup({
     opts = { signs = false },
   },
 
-  {
-    'stevearc/aerial.nvim',
-    opts = {},
-
-    -- Optional dependencies
-    dependencies = {
-      'nvim-treesitter/nvim-treesitter',
-      'nvim-tree/nvim-web-devicons',
-    },
+  -- {
+  --   'stevearc/aerial.nvim',
+  --   opts = {},
+  --
+  --   -- Optional dependencies
+  --   dependencies = {
+  --     'nvim-treesitter/nvim-treesitter',
+  --     'nvim-tree/nvim-web-devicons',
+  --   },
+  --   config = function()
+  --     local aerial = require 'aerial'
+  --
+  --     aerial.setup {
+  --       layout = {
+  --         default_direction = 'float',
+  --       },
+  --       -- optionally use on_attach to set keymaps when aerial has attached to a buffer
+  --       on_attach = function(bufnr)
+  --         -- Jump forwards/backwards with '{' and '}'
+  --         vim.keymap.set('n', '{', '<cmd>AerialPrev<CR>', { buffer = bufnr })
+  --         vim.keymap.set('n', '}', '<cmd>AerialNext<CR>', { buffer = bufnr })
+  --       end,
+  --       close_on_select = true,
+  --     }
+  --     vim.keymap.set('n', '<leader>a', '<cmd>AerialToggle<CR>')
+  --   end,
+  -- },
+  { -- Collection of various small independent plugins/modules
+    'echasnovski/mini.nvim',
     config = function()
-      local aerial = require 'aerial'
+      require('mini.pairs').setup()
+      -- require('mini.files').setup {
+      --   vim.keymap.set('n', '<leader>sf', require('mini.files').open, { desc = '[S]earch [F]ilesystem' }),
+      --   use_as_default_explorer = true,
+      -- }
+      -- Better Around/Inside textobjects
+      --
+      -- Examples:
+      --  - va)  - [V]isually select [A]round [)]paren
+      --  - yinq - [Y]ank [I]nside [N]ext [Q]uote
+      --  - ci'  - [C]hange [I]nside [']quote
+      -- require('mini.ai').setup { n_lines = 500 }
 
-      aerial.setup {
-        layout = {
-          default_direction = 'float',
-        },
-        -- optionally use on_attach to set keymaps when aerial has attached to a buffer
-        on_attach = function(bufnr)
-          -- Jump forwards/backwards with '{' and '}'
-          vim.keymap.set('n', '{', '<cmd>AerialPrev<CR>', { buffer = bufnr })
-          vim.keymap.set('n', '}', '<cmd>AerialNext<CR>', { buffer = bufnr })
-        end,
-        close_on_select = true,
+      -- Add/delete/replace surroundings (brackets, quotes, etc.)
+      --
+      -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
+      -- - sd'   - [S]urround [D]elete [']quotes
+      -- - sr)'  - [S]urround [R]eplace [)] [']
+      -- require('mini.surround').setup()
+
+      -- Simple and easy statusline.
+      --  You could remove this setup call if you don't like it,
+      --  and try some other statusline plugin
+      local statusline = require 'mini.statusline'
+      -- set use_icons to true if you have a Nerd Font
+      statusline.setup { use_icons = vim.g.have_nerd_font }
+
+      -- You can configure sections in the statusline by overriding their
+      -- default behavior. For example, here we set the section for
+      -- cursor location to LINE:COLUMN
+      ---@diagnostic disable-next-line: duplicate-set-field
+      statusline.section_location = function()
+        return '%2l:%-2v'
+      end
+
+      -- ... and there is more!
+      --  Check out: https://github.com/echasnovski/mini.nvim
+    end,
+  },
+  {
+    'kylechui/nvim-surround',
+    version = '^3.1.0', -- Use for stability; omit to use `main` branch for the latest features
+    event = 'VeryLazy',
+    config = function()
+      require('nvim-surround').setup {
+        -- Configuration here, or leave empty to use defaults
       }
-      vim.keymap.set('n', '<leader>a', '<cmd>AerialToggle<CR>')
     end,
   },
 
   {
-    'folke/flash.nvim',
-    event = 'VeryLazy',
-    ---@type Flash.Config
+    'folke/snacks.nvim',
+    ---@type snacks.Config
+    priority = 1000,
+    lazy = false,
     opts = {
-      modes = {
-        search = {
-          enabled = true,
-        },
+      explorer = {
+        replace_netrw = true,
       },
-    },
-  -- stylua: ignore
-  keys = {
-    { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
-    { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
-    { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
-    { "r", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
-    { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
-  },
-    { -- Collection of various small independent plugins/modules
-      'echasnovski/mini.nvim',
-      config = function()
-        require('mini.pairs').setup()
-        -- require('mini.files').setup {
-        --   vim.keymap.set('n', '<leader>sf', require('mini.files').open, { desc = '[S]earch [F]ilesystem' }),
-        --   use_as_default_explorer = true,
-        -- }
-        -- Better Around/Inside textobjects
-        --
-        -- Examples:
-        --  - va)  - [V]isually select [A]round [)]paren
-        --  - yinq - [Y]ank [I]nside [N]ext [Q]uote
-        --  - ci'  - [C]hange [I]nside [']quote
-        -- require('mini.ai').setup { n_lines = 500 }
-
-        -- Add/delete/replace surroundings (brackets, quotes, etc.)
-        --
-        -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
-        -- - sd'   - [S]urround [D]elete [']quotes
-        -- - sr)'  - [S]urround [R]eplace [)] [']
-        -- require('mini.surround').setup()
-
-        -- Simple and easy statusline.
-        --  You could remove this setup call if you don't like it,
-        --  and try some other statusline plugin
-        local statusline = require 'mini.statusline'
-        -- set use_icons to true if you have a Nerd Font
-        statusline.setup { use_icons = vim.g.have_nerd_font }
-
-        -- You can configure sections in the statusline by overriding their
-        -- default behavior. For example, here we set the section for
-        -- cursor location to LINE:COLUMN
-        ---@diagnostic disable-next-line: duplicate-set-field
-        statusline.section_location = function()
-          return '%2l:%-2v'
-        end
-
-        -- ... and there is more!
-        --  Check out: https://github.com/echasnovski/mini.nvim
-      end,
-    },
-    {
-      'kylechui/nvim-surround',
-      version = '^3.1.0', -- Use for stability; omit to use `main` branch for the latest features
-      event = 'VeryLazy',
-      config = function()
-        require('nvim-surround').setup {
-          -- Configuration here, or leave empty to use defaults
-        }
-      end,
-    },
-
-    {
-      'folke/snacks.nvim',
-      ---@type snacks.Config
-      priority = 1000,
-      lazy = false,
-      opts = {
-        explorer = {
-          replace_netrw = true,
-        },
-        picker = {
-          sources = {
-            -- explorer = {
-            --   diagnostics = false,
-            --   hidden = false,
-            --   ignored = true,
-            --   exclude = { '.git', '**/.DS_Store' },
-            --   win = {
-            --     list = {
-            --       wo = {
-            --         number = true, -- Enable line numbers
-            --         relativenumber = true, -- Enable relative line numbers
-            --       },
-            --     },
-            --   },
-            -- },
-            explorer = {
-              diagnostics = false,
-              hidden = true,
-              ignored = false,
-              exclude = { '.git', '**/.DS_Store' },
-              auto_close = true,
+      picker = {
+        sources = {
+          -- explorer = {
+          --   diagnostics = false,
+          --   hidden = false,
+          --   ignored = true,
+          --   exclude = { '.git', '**/.DS_Store' },
+          --   win = {
+          --     list = {
+          --       wo = {
+          --         number = true, -- Enable line numbers
+          --         relativenumber = true, -- Enable relative line numbers
+          --       },
+          --     },
+          --   },
+          -- },
+          explorer = {
+            diagnostics = false,
+            hidden = true,
+            ignored = false,
+            exclude = { '.git', '**/.DS_Store' },
+            auto_close = true,
+            layout = {
+              { preview = true },
               layout = {
-                { preview = true },
-                layout = {
-                  box = 'horizontal',
-                  width = 0.8,
-                  height = 0.8,
-                  {
-                    box = 'vertical',
-                    border = 'rounded',
-                    title = '{source} {live} {flags}',
-                    title_pos = 'center',
-                    { win = 'input', height = 1, border = 'bottom' },
-                    { win = 'list', border = 'none' },
-                  },
-                  { win = 'preview', border = 'rounded', width = 0.7, title = '{preview}' },
+                box = 'horizontal',
+                width = 0.8,
+                height = 0.8,
+                {
+                  box = 'vertical',
+                  border = 'rounded',
+                  title = '{source} {live} {flags}',
+                  title_pos = 'center',
+                  { win = 'input', height = 1, border = 'bottom' },
+                  { win = 'list', border = 'none' },
                 },
+                { win = 'preview', border = 'rounded', width = 0.7, title = '{preview}' },
               },
-              win = {
-                list = {
-                  wo = {
-                    number = true,
-                    relativenumber = true,
-                  },
+            },
+            win = {
+              list = {
+                wo = {
+                  number = true,
+                  relativenumber = true,
                 },
               },
             },
           },
         },
       },
-      keys = {
-        {
-          '<leader>e',
-          function()
-            Snacks.explorer()
-          end,
-          desc = 'File Explorer',
-        },
-        {
-          '<leader>gg',
-          function()
-            Snacks.lazygit()
-          end,
-          desc = 'Lazygit',
-        },
+    },
+    keys = {
+      {
+        '<leader>e',
+        function()
+          Snacks.explorer()
+        end,
+        desc = 'File Explorer',
+      },
+      {
+        '<leader>gg',
+        function()
+          Snacks.lazygit()
+        end,
+        desc = 'Lazygit',
       },
     },
   },
