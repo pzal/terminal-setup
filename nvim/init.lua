@@ -91,6 +91,14 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+-- Toggle function for virtual_lines
+local virtual_lines_enabled = false
+vim.keymap.set('n', '<leader>dd', function()
+  virtual_lines_enabled = not virtual_lines_enabled
+  vim.diagnostic.config {
+    virtual_lines = virtual_lines_enabled,
+  }
+end, { desc = 'Toggle inline diagnostics' })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
