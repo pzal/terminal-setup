@@ -92,6 +92,9 @@ mv .zshrc $HOME/.zshrc
 
 mkdir -p ~/.config
 
+# Install formatters for nvim
+pipx install black isort
+
 # Setup up neovim
 rm -rf ~/.config/nvim || true
 mv nvim ~/.config/nvim
