@@ -350,7 +350,7 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
       -- vim.keymap.set('n', '<leader><leader>', builtin.find_files, { desc = '[S]earch [F]iles' })
       vim.keymap.set('n', '<leader><leader>', function()
-        builtin.find_files()
+        builtin.find_files { hidden = true, no_ignore = false }
       end, { desc = '[S]earch [F]iles' })
       vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
       vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
@@ -615,7 +615,7 @@ require('lazy').setup({
         --    https://github.com/pmizio/typescript-tools.nvim
         --
         -- But for many setups, the LSP (`ts_ls`) will work just fine
-        -- ts_ls = {},
+        ts_ls = {},
         --
 
         lua_ls = {
@@ -703,11 +703,8 @@ require('lazy').setup({
       format_on_save = false,
       formatters_by_ft = {
         lua = { 'stylua' },
-        -- Conform can also run multiple formatters sequentially
-        python = { "isort", "black" },
-        --
-        -- You can use 'stop_after_first' to run the first available formatter from the list
-        -- javascript = { "prettierd", "prettier", stop_after_first = true },
+        python = { 'isort', 'black' },
+        javascript = { 'biome' },
       },
     },
   },
@@ -821,29 +818,29 @@ require('lazy').setup({
   --     vim.cmd.colorscheme 'edge'
   --   end,
   -- },
-  -- {
-  --   'savq/melange-nvim',
-  --   lazy = false,
-  --   priority = 1000,
-  --   config = function()
-  --     -- Optionally configure and load the colorscheme
-  --     -- directly inside the plugin declaration.
-  --     vim.cmd.colorscheme 'melange'
-  --   end,
-  -- },
   {
-    'gmr458/vscode_modern_theme.nvim',
+    'savq/melange-nvim',
     lazy = false,
     priority = 1000,
     config = function()
-      require('vscode_modern').setup {
-        cursorline = true,
-        transparent_background = false,
-        nvim_tree_darker = true,
-      }
-      vim.cmd.colorscheme 'vscode_modern'
+      -- Optionally configure and load the colorscheme
+      -- directly inside the plugin declaration.
+      vim.cmd.colorscheme 'melange'
     end,
   },
+  -- {
+  --   'gmr458/vscode_modern_theme.nvim',
+  --   lazy = false,
+  --   priority = 1000,
+  --   config = function()
+  --     require('vscode_modern').setup {
+  --       cursorline = true,
+  --       transparent_background = false,
+  --       nvim_tree_darker = true,
+  --     }
+  --     vim.cmd.colorscheme 'vscode_modern'
+  --   end,
+  -- },
   {
     'folke/todo-comments.nvim',
     event = 'VimEnter',
