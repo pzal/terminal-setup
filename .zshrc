@@ -58,7 +58,7 @@ activate() {
 
 # Sumo stuff
 if [[ "$(uname)" == "Darwin" ]]; then
-  export SUMO_HOME="/opt/homebrew/Cellar/sumo/2.20.0/share/sumo"
+  export SUMO_HOME="/opt/homebrew/opt/sumo/share/sumo"
   export PATH="$SUMO_HOME/bin:$PATH"
 fi
 
@@ -113,7 +113,7 @@ n ()
 
     # The command builtin allows one to alias nnn to n, if desired, without
     # making an infinitely recursive alias
-    command nnn "$@"
+    command nnn -A "$@"
 
     [ ! -f "$NNN_TMPFILE" ] || {
         . "$NNN_TMPFILE"
@@ -121,3 +121,11 @@ n ()
     }
 }
 
+
+# pnpm
+export PNPM_HOME="/Users/pzal/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
