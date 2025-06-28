@@ -6,7 +6,7 @@ fi
 
 $SUDO apt update
 $SUDO apt install -y \
-  vivid git curl build-essential neovim fzf ripgrep fd-find wget tmux pipx nnn
+  git curl build-essential neovim fzf ripgrep fd-find wget tmux pipx nnn
 pipx ensurepath
 $SUDO pipx ensurepath --global
 
