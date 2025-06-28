@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+$SUDO=""
+if [ "$EUID" -ne 0 ]; then
+  $SUDO="sudo"
+fi
+
 if [[ "$(uname)" == "Darwin" ]]; then
   ./install_deps.mac.sh
 else
@@ -17,7 +22,7 @@ if [[ "$(uname)" == "Linux" ]]; then
   PAM_CHSH_BACKUP="/etc/pam.d/chsh.bak"
   if [ ! -f "$PAM_CHSH_BACKUP" ]; then
     echo "Backing up $PAM_CHSH_FILE..."
-    if ! sudo cp "$PAM_CHSH_FILE" "$PAM_CHSH_BACKUP"; then
+    if ! $SUDO cp "$PAM_CHSH_FILE" "$PAM_CHSH_BACKUP"; then
       warn "Failed to back up $PAM_CHSH_FILE. This step will be skipped."
     fi
   else
@@ -26,17 +31,17 @@ if [[ "$(uname)" == "Linux" ]]; then
 
   # Temporarily modify /etc/pam.d/chsh
   echo "Temporarily modifying $PAM_CHSH_FILE to allow shell change without password..."
-  if ! sudo sed -i '/auth/s/^/#/' "$PAM_CHSH_FILE"; then
+  if ! $SUDO sed -i '/auth/s/^/#/' "$PAM_CHSH_FILE"; then
     warn "Failed to comment out 'auth' lines in $PAM_CHSH_FILE."
   fi
-  if ! echo "auth       sufficient   pam_shells.so" | sudo tee -a "$PAM_CHSH_FILE" >/dev/null; then
+  if ! echo "auth       sufficient   pam_shells.so" | $SUDO tee -a "$PAM_CHSH_FILE" >/dev/null; then
     warn "Failed to append 'auth sufficient pam_shells.so' to $PAM_CHSH_FILE."
   fi
 
   # Update package list and install Zsh
   echo "Installing Zsh..."
-  if ! (sudo apt update && sudo apt install -y zsh); then
-    warn "Failed to install Zsh. Make sure you have sudo privileges and are connected to the internet."
+  if ! ($SUDO apt update && $SUDO apt install -y zsh); then
+    warn "Failed to install Zsh. Make sure you have $SUDO privileges and are connected to the internet."
   fi
 
   # Verify Zsh installation
@@ -57,7 +62,7 @@ if [[ "$(uname)" == "Linux" ]]; then
   # Restore original /etc/pam.d/chsh
   echo "Restoring original $PAM_CHSH_FILE..."
   if [ -f "$PAM_CHSH_BACKUP" ]; then
-    if ! sudo mv "$PAM_CHSH_BACKUP" "$PAM_CHSH_FILE"; then
+    if ! $SUDO mv "$PAM_CHSH_BACKUP" "$PAM_CHSH_FILE"; then
       warn "Failed to restore original $PAM_CHSH_FILE. Ensure that it is secured manually."
     else
       echo "Successfully restored $PAM_CHSH_FILE."
