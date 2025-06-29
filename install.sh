@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-$SUDO=""
+SUDO=""
 if [ "$EUID" -ne 0 ]; then
-  $SUDO="sudo"
+  SUDO="sudo"
 fi
 
 if [[ "$(uname)" == "Darwin" ]]; then
