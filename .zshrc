@@ -1,3 +1,4 @@
+set -o vi
 
 export ZSH="$HOME/.oh-my-zsh"
 
