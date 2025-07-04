@@ -130,3 +130,9 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
+
+# Devcontainers
+alias dcup='devcontainer up --remove-existing-container --workspace-folder .'
+alias dcb='devcontainer build --workspace-folder .'
+alias dce='devcontainer exec --workspace-folder .'
+
