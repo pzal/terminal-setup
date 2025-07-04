@@ -102,8 +102,8 @@ pipx install isort
 pipx install black
 
 # Setup up neovim
-# rm -rf ~/.config/nvim || true
-# mv nvim ~/.config/nvim
+rm -rf ~/.config/nvim || true
+mv nvim ~/.config/nvim
 
 # Setup tmux
 rm ~/tmux || true
