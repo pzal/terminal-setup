@@ -1,5 +1,3 @@
-set -o vi
-
 export ZSH="$HOME/.oh-my-zsh"
 
 ZSH_THEME="intheloop"
@@ -122,6 +120,8 @@ n ()
     }
 }
 
+# Vi mode
+set -o vi
 
 # pnpm
 export PNPM_HOME="/Users/pzal/Library/pnpm"
