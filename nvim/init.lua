@@ -57,6 +57,8 @@ vim.o.timeoutlen = 300
 vim.o.splitright = true
 vim.o.splitbelow = true
 
+vim.o.shiftwidth = 4
+
 -- Sets how neovim will display certain whitespace characters in the editor.
 --  See `:help 'list'`
 --  and `:help 'listchars'`
@@ -214,6 +216,71 @@ require('lazy').setup({
         changedelete = { text = '~' },
       },
     },
+    on_attach = function(bufnr)
+      local gitsigns = require 'gitsigns'
+
+      local function map(mode, l, r, opts)
+        opts = opts or {}
+        opts.buffer = bufnr
+        vim.keymap.set(mode, l, r, opts)
+      end
+
+      -- Navigation
+      map('n', ']c', function()
+        if vim.wo.diff then
+          vim.cmd.normal { ']c', bang = true }
+        else
+          gitsigns.nav_hunk 'next'
+        end
+      end)
+
+      map('n', '[c', function()
+        if vim.wo.diff then
+          vim.cmd.normal { '[c', bang = true }
+        else
+          gitsigns.nav_hunk 'prev'
+        end
+      end)
+
+      -- Actions
+      map('n', '<leader>hs', gitsigns.stage_hunk)
+      map('n', '<leader>hr', gitsigns.reset_hunk)
+
+      map('v', '<leader>hs', function()
+        gitsigns.stage_hunk { vim.fn.line '.', vim.fn.line 'v' }
+      end)
+
+      map('v', '<leader>hr', function()
+        gitsigns.reset_hunk { vim.fn.line '.', vim.fn.line 'v' }
+      end)
+
+      map('n', '<leader>hS', gitsigns.stage_buffer)
+      map('n', '<leader>hR', gitsigns.reset_buffer)
+      map('n', '<leader>hp', gitsigns.preview_hunk)
+      map('n', '<leader>hi', gitsigns.preview_hunk_inline)
+
+      map('n', '<leader>hb', function()
+        gitsigns.blame_line { full = true }
+      end)
+
+      map('n', '<leader>hd', gitsigns.diffthis)
+
+      map('n', '<leader>hD', function()
+        gitsigns.diffthis '~'
+      end)
+
+      map('n', '<leader>hQ', function()
+        gitsigns.setqflist 'all'
+      end)
+      map('n', '<leader>hq', gitsigns.setqflist)
+
+      -- Toggles
+      map('n', '<leader>tb', gitsigns.toggle_current_line_blame)
+      map('n', '<leader>tw', gitsigns.toggle_word_diff)
+
+      -- Text object
+      map({ 'o', 'x' }, 'ih', gitsigns.select_hunk)
+    end,
   },
 
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
@@ -370,6 +437,9 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
       vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
       vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
+      vim.keymap.set('n', '<leader>sa', function()
+        builtin.find_files { hidden = true, no_ignore = true }
+      end, { desc = '[S]earch [A]ll Files' })
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       -- vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
 
@@ -620,7 +690,7 @@ require('lazy').setup({
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
-        -- clangd = {},
+        clangd = {},
         -- gopls = {},
         pyright = {},
         -- rust_analyzer = {},
