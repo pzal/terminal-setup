@@ -106,7 +106,7 @@ rm -rf ~/.config/nvim || true
 mv nvim ~/.config/nvim
 
 # Setup tmux
-rm ~/tmux || true
+rm ~/.config/tmux || true
 mv tmux ~/.config/tmux
 
 # Setup kitty
