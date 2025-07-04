@@ -117,18 +117,17 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
-if vim.g.neovide then
-  vim.o.guifont = 'Menlo:h12' -- text below applies for VimScript
-  vim.g.neovide_theme = 'light'
-  vim.g.neovide_scroll_animation_length = 0.05
-  vim.g.neovide_remember_window_size = true
-  vim.g.neovide_cursor_animation_length = 0.02
-  vim.g.neovide_cursor_short_animation_length = 0.01
-  vim.g.neovide_cursor_trail_size = 1.0
-  vim.g.neovide_cursor_antialiasing = true
-  vim.g.neovide_cursor_animate_in_insert_mode = true
-  vim.opt.linespace = 8
-end
+vim.o.guifont = 'Menlo:h12'
+vim.g.neovide_theme = 'light'
+vim.g.neovide_scroll_animation_length = 0.05
+vim.g.neovide_remember_window_size = true
+vim.g.neovide_cursor_animation_length = 0.02
+vim.g.neovide_cursor_short_animation_length = 0.01
+vim.g.neovide_cursor_trail_size = 1.0
+vim.g.neovide_cursor_antialiasing = true
+vim.g.neovide_cursor_animate_in_insert_mode = true
+vim.g.neovide_input_macos_option_key_is_meta = 'only_left'
+vim.opt.linespace = 8
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
