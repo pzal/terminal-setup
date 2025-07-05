@@ -18,6 +18,7 @@ If you experience any errors while trying to install kickstart, run `:checkhealt
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 vim.g.have_nerd_font = true
+vim.opt.termguicolors = true
 vim.o.number = true
 vim.o.relativenumber = true
 -- Enable mouse mode, can be useful for resizing splits for example!
