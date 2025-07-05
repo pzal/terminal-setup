@@ -136,3 +136,4 @@ alias dcup='devcontainer up --remove-existing-container --workspace-folder .'
 alias dcb='devcontainer build --workspace-folder .'
 alias dce='devcontainer exec --workspace-folder .'
 
+export LANG=C.UTF-8
