@@ -1,4 +1,9 @@
 set -g set-clipboard on
+unbind-key -T copy-mode-vi MouseDragEnd1Pane
+set -g @plugin 'tmux-plugins/tmux-yank'
+set -g @yank_action 'copy-pipe'
+set -g @yank_with_mouse off
+
 
 # -- bindings ------------------------------------------------------------------
 
