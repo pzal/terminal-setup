@@ -183,5 +183,4 @@ echo "Cleaning up temporary files..."
 cd "$HOME"
 rm -rf "$TEMP_DIR"
 
-echo -e "\nSetup is complete! Starting fresh zsh session..."
-exec zsh
+echo -e "\nSetup is complete!"
