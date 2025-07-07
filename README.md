@@ -1,7 +1,9 @@
 # terminal-setup
 
+## Installation
+
 ```bash
-git clone https://github.com/pzal/terminal-setup.git /tmp/terminal-setup
-cd /tmp/terminal-setup
-bash install.sh && cd ~ && rm -rf /tmp/terminal-setup && echo exit | script -qec zsh /dev/null >/dev/null && exec zsh
+curl -fsSL https://raw.githubusercontent.com/pzal/terminal-setup/main/install.sh | bash
 ```
+
+The setup automatically checks for updates and only runs when changes are detected.

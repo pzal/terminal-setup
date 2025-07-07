@@ -5,13 +5,43 @@ if [ "$EUID" -ne 0 ]; then
   SUDO="sudo"
 fi
 
+# Version tracking
+VERSION_FILE="$HOME/.terminal-setup-version"
+REPO_URL="https://github.com/pzal/terminal-setup"
+
+get_latest_commit() {
+  git ls-remote "$REPO_URL" HEAD 2>/dev/null | cut -f1
+}
+
+echo "Checking for updates..."
+LATEST_COMMIT=$(get_latest_commit)
+if [ -n "$LATEST_COMMIT" ] && [ -f "$VERSION_FILE" ]; then
+  CURRENT_VERSION=$(cat "$VERSION_FILE" 2>/dev/null)
+  if [ "$CURRENT_VERSION" = "$LATEST_COMMIT" ]; then
+    echo "Setup is already up to date (version: ${LATEST_COMMIT:0:7})"
+    exit 0
+  else
+    echo "New version available. Running setup..."
+  fi
+else
+  echo "Running setup..."
+fi
+
+TEMP_DIR="/tmp/terminal-setup-$$"
+echo "Cloning repository to $TEMP_DIR..."
+if ! git clone "$REPO_URL" "$TEMP_DIR"; then
+  echo "Failed to clone repository. Exiting."
+  exit 1
+fi
+
+cd "$TEMP_DIR"
+
 if [[ "$(uname)" == "Darwin" ]]; then
   ./install_deps.mac.sh
 else
   ./install_deps.ubuntu.sh
 fi
 
-# Function to log warnings
 function warn {
   echo "Warning: $1"
 }
@@ -93,7 +123,12 @@ nvm install 22
 # Devcontainer CLI
 npm i --global @devcontainers/cli
 
-mv .zshrc $HOME/.zshrc
+# Configure Git
+echo "Configuring Git..."
+git config --global user.name "Piotr Zalewski"
+git config --global user.email "mail@pzalewski.com"
+
+cp .zshrc $HOME/.zshrc
 
 mkdir -p ~/.config
 
@@ -103,14 +138,26 @@ pipx install black
 
 # Setup up neovim
 rm -rf ~/.config/nvim || true
-mv nvim ~/.config/nvim
+cp -r nvim ~/.config/nvim
 
 # Setup tmux
 rm -rf ~/.config/tmux || true
-mv tmux ~/.config/tmux
+cp -r tmux ~/.config/tmux
 
 # Setup kitty
 rm -rf ~/.config/kitty || true
-mv kitty ~/.config/kitty
+cp -r kitty ~/.config/kitty
 
-echo -e "\nSetup is complete! Please restart your terminal or run 'exec zsh' to start using Zsh with Powerlevel10k and Oh My Zsh."
+# Save version to track successful completion
+if [ -n "$LATEST_COMMIT" ]; then
+  echo "$LATEST_COMMIT" > "$VERSION_FILE"
+  echo "Saved version: ${LATEST_COMMIT:0:7}"
+fi
+
+# Clean up temporary directory
+echo "Cleaning up temporary files..."
+cd "$HOME"
+rm -rf "$TEMP_DIR"
+
+echo -e "\nSetup is complete! Starting fresh zsh session..."
+exec zsh
