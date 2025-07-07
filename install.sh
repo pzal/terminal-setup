@@ -5,6 +5,26 @@ if [ "$EUID" -ne 0 ]; then
   SUDO="sudo"
 fi
 
+# Check if git is installed, install if not
+if ! command -v git >/dev/null 2>&1; then
+  echo "Git not found. Installing git..."
+  if [[ "$(uname)" == "Darwin" ]]; then
+    brew install git
+  else
+    $SUDO apt-get update && $SUDO apt-get install -y git
+  fi
+
+  # Verify git installation
+  if ! command -v git >/dev/null 2>&1; then
+    echo "Error: Git installation failed."
+    exit 1
+  else
+    echo "Git installed successfully."
+  fi
+else
+  echo "Git is already installed."
+fi
+
 # Version tracking
 VERSION_FILE="$HOME/.terminal-setup-version"
 REPO_URL="https://github.com/pzal/terminal-setup"
