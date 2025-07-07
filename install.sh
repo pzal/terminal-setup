@@ -5,6 +5,10 @@ if [ "$EUID" -ne 0 ]; then
   SUDO="sudo"
 fi
 
+# Make all package installations non-interactive
+export DEBIAN_FRONTEND=noninteractive
+export TZ=Europe/Warsaw
+
 # Check if git is installed, install if not
 if ! command -v git >/dev/null 2>&1; then
   echo "Git not found. Installing git..."
