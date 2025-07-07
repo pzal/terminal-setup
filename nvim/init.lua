@@ -18,6 +18,7 @@ If you experience any errors while trying to install kickstart, run `:checkhealt
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 vim.g.have_nerd_font = true
+vim.o.shell = '/bin/zsh'
 vim.opt.termguicolors = true
 vim.opt.background = 'light'
 vim.o.number = true
