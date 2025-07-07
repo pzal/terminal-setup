@@ -157,6 +157,24 @@ vim.api.nvim_create_autocmd('FileType', {
   end,
 })
 
+vim.api.nvim_create_autocmd('TermOpen', {
+  callback = function()
+    vim.cmd 'startinsert'
+    vim.api.nvim_create_autocmd('ModeChanged', {
+      buffer = 0,
+      callback = function()
+        if vim.fn.mode() == 't' then
+          vim.wo.number = false
+          vim.wo.relativenumber = false
+        else
+          vim.wo.number = true
+          vim.wo.relativenumber = true
+        end
+      end,
+    })
+  end,
+})
+
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
@@ -1148,6 +1166,89 @@ require('lazy').setup({
     --    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
     --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
     --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
+  },
+  {
+    'saucoide/harpoon',
+    config = function()
+      require('harpoon').setup {
+        -- Configuration here, or leave empty to use defaults
+        --
+      }
+      for i = 1, 9 do
+        vim.keymap.set('n', '<leader>' .. i, function()
+          require('harpoon.ui').nav_file(i)
+        end, { desc = 'Harpoon to buffer ' .. i })
+      end
+
+      vim.keymap.set('n', '<leader>a', require('harpoon.mark').add_file, { desc = 'Harpoon: [A]dd file' })
+      vim.keymap.set('n', '<leader>sm', require('harpoon.ui').toggle_quick_menu, { desc = 'Harpoon: [S]earch [M]emory' })
+      vim.keymap.set('n', '<leader>st', function()
+        require('harpoon.ui').toggle_quick_menu(require('harpoon').list 'terms')
+      end, { desc = 'Harpoon: terminals list' })
+
+      for i = 1, 5 do
+        vim.keymap.set('n', '<leader>t' .. i, function()
+          require('harpoon.term').gotoTerminal(i)
+        end, { desc = 'Harpoon to terminal ' .. i })
+      end
+
+      local pickers = require 'telescope.pickers'
+      local finders = require 'telescope.finders'
+      local conf = require('telescope.config').values
+      local actions = require 'telescope.actions'
+      local action_state = require 'telescope.actions.state'
+
+      local function get_terminal_buffers()
+        local bufs = {}
+        for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
+          if vim.api.nvim_buf_is_valid(bufnr) and vim.bo[bufnr].buftype == 'terminal' then
+            local name = vim.api.nvim_buf_get_name(bufnr)
+            local display_name = name:match 'term://.*//(%d+):(.*)' or vim.fn.fnamemodify(name, ':t')
+            table.insert(bufs, {
+              bufnr = bufnr,
+              name = display_name,
+              full_name = name,
+            })
+          end
+        end
+        return bufs
+      end
+
+      local function terminal_picker()
+        local terminals = get_terminal_buffers()
+        if #terminals == 0 then
+          print 'No terminal buffers found'
+          return
+        end
+
+        pickers
+          .new({}, {
+            prompt_title = 'Terminal Buffers',
+            finder = finders.new_table {
+              results = terminals,
+              entry_maker = function(entry)
+                return {
+                  value = entry,
+                  display = entry.name,
+                  ordinal = entry.name,
+                }
+              end,
+            },
+            sorter = conf.generic_sorter {},
+            attach_mappings = function(prompt_bufnr, map)
+              actions.select_default:replace(function()
+                actions.close(prompt_bufnr)
+                local selection = action_state.get_selected_entry().value
+                vim.api.nvim_set_current_buf(selection.bufnr)
+              end)
+              return true
+            end,
+          })
+          :find()
+      end
+
+      vim.keymap.set('n', '<leader>st', terminal_picker, { desc = '[S]earch [T]erminal' })
+    end,
   },
 
   -- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
