@@ -170,6 +170,7 @@ pipx install black
 # Setup up neovim
 rm -rf ~/.config/nvim || true
 cp -r nvim ~/.config/nvim
+nvim --headless "+Lazy! sync" +qa
 
 # Setup tmux
 rm -rf ~/.config/tmux || true
