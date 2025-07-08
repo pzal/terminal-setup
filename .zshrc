@@ -1,8 +1,3 @@
-# Source existing configuration if it was backed up
-if [ -f "$HOME/.zshrc.old" ]; then
-    source "$HOME/.zshrc.old"
-fi
-
 export ZSH="$HOME/.oh-my-zsh"
 
 ZSH_THEME="intheloop"
@@ -11,8 +6,8 @@ export UPDATE_ZSH_DAYS=30
 
 plugins=(
     colored-man-pages
-    docker
-    docker-compose
+    # docker
+    # docker-compose
     # zsh-vi-mode
 )
 
@@ -137,9 +132,20 @@ esac
 # pnpm end
 
 # Devcontainers
+#
 alias dcup='devcontainer up --remove-existing-container --workspace-folder .'
 alias dcb='devcontainer build --workspace-folder .'
-alias dce='devcontainer exec --workspace-folder . zsh -c "curl -fsSL https://raw.githubusercontent.com/pzal/terminal-setup/main/install.sh | bash; exec zsh"'
+
+dce () {
+    WORKSPACE_FOLDER=$(pwd)
+    CONTAINER_ID=$(docker ps -q --filter "label=devcontainer.local_folder=${WORKSPACE_FOLDER}")
+    docker exec --detach-keys='ctrl-q,q' -ti $CONTAINER_ID zsh -c "curl -fsSL https://raw.githubusercontent.com/pzal/terminal-setup/main/install.sh | bash; exec zsh"
+}
+
+dcel () {
+    WORKSPACE_FOLDER=$(pwd)
+    CONTAINER_ID=$(docker ps -q --filter "label=devcontainer.local_folder=${WORKSPACE_FOLDER}")
+    docker exec --detach-keys='ctrl-q,q' -ti $CONTAINER_ID zsh
+}
 
 export LANG=C.UTF-8
-
