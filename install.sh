@@ -168,15 +168,18 @@ pipx install isort
 pipx install black
 
 # Setup up neovim
+echo "Setting up neovim…"
 rm -rf ~/.config/nvim || true
 cp -r nvim ~/.config/nvim
 nvim --headless "+Lazy! sync" +qa
 
 # Setup tmux
+echo "Setting up tmux…"
 rm -rf ~/.config/tmux || true
 cp -r tmux ~/.config/tmux
 
 # Setup kitty
+echo "Setting up kitty…"
 rm -rf ~/.config/kitty || true
 cp -r kitty ~/.config/kitty
 
