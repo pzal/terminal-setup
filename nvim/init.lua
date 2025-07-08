@@ -35,7 +35,7 @@ vim.o.foldenable = false
 --  See `:help 'clipboard'`
 vim.schedule(function()
   vim.o.clipboard = 'unnamedplus'
-  -- vim.g.clipboard = 'osc52'
+  vim.g.clipboard = 'osc52'
 end)
 
 -- Enable break indent
