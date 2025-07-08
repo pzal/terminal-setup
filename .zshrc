@@ -1,3 +1,8 @@
+# Source existing configuration if it was backed up
+if [ -f "$HOME/.zshrc.old" ]; then
+    source "$HOME/.zshrc.old"
+fi
+
 export ZSH="$HOME/.oh-my-zsh"
 
 ZSH_THEME="intheloop"
@@ -137,3 +142,4 @@ alias dcb='devcontainer build --workspace-folder .'
 alias dce='devcontainer exec --workspace-folder . zsh -c "curl -fsSL https://raw.githubusercontent.com/pzal/terminal-setup/main/install.sh | bash; exec zsh"'
 
 export LANG=C.UTF-8
+

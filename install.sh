@@ -152,6 +152,13 @@ echo "Configuring Git..."
 git config --global user.name "Piotr Zalewski"
 git config --global user.email "mail@pzalewski.com"
 
+# Handle existing .zshrc
+if [ -f "$HOME/.zshrc" ]; then
+    echo "Existing .zshrc found. Backing up to .zshrc.old..."
+    mv "$HOME/.zshrc" "$HOME/.zshrc.old"
+fi
+
+# Copy new .zshrc
 cp .zshrc $HOME/.zshrc
 
 mkdir -p ~/.config
