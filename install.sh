@@ -9,12 +9,6 @@ fi
 export DEBIAN_FRONTEND=noninteractive
 export TZ=Europe/Warsaw
 
-# Handle existing .zshrc
-if [ -f "$HOME/.zshrc" ]; then
-    echo "Existing .zshrc found. Backing up to .zshrc.old..."
-    mv "$HOME/.zshrc" "$HOME/.zshrc.old"
-fi
-
 # Check if git is installed, install if not
 if ! command -v git >/dev/null 2>&1; then
   echo "Git not found. Installing git..."
@@ -55,6 +49,12 @@ if [ -n "$LATEST_COMMIT" ] && [ -f "$VERSION_FILE" ]; then
   fi
 else
   echo "Running setup..."
+fi
+
+# Handle existing .zshrc
+if [ -f "$HOME/.zshrc" ]; then
+    echo "Existing .zshrc found. Backing up to .zshrc.old..."
+    mv "$HOME/.zshrc" "$HOME/.zshrc.old"
 fi
 
 TEMP_DIR="/tmp/terminal-setup-$$"
