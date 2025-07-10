@@ -163,6 +163,8 @@ cp .zshrc $HOME/.zshrc
 
 mkdir -p ~/.config
 
+touch ~/.config/lazygit/config.yml
+
 # Install formatters for nvim
 pipx install isort
 pipx install black

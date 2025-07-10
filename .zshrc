@@ -143,7 +143,7 @@ alias dcb='devcontainer build --workspace-folder .'
 dce () {
     WORKSPACE_FOLDER=$(pwd)
     CONTAINER_ID=$(docker ps -q --filter "label=devcontainer.local_folder=${WORKSPACE_FOLDER}")
-    docker exec --detach-keys='ctrl-q,q' -ti $CONTAINER_ID bash -c "curl -fsSL https://raw.githubusercontent.com/pzal/terminal-setup/main/install.sh | bash; exec zsh"
+    docker exec --detach-keys='ctrl-q,q' -ti $CONTAINER_ID bash -c "git config --global --add safe.directory \$(pwd) && curl -fsSL https://raw.githubusercontent.com/pzal/terminal-setup/main/install.sh | bash; exec zsh"
 }
 
 dcel () {
