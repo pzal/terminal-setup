@@ -153,6 +153,9 @@ nvm install 22
 # Devcontainer CLI
 npm i --global @devcontainers/cli
 
+# Claude
+npm install -g @anthropic-ai/claude-code
+
 # Configure Git
 echo "Configuring Git..."
 git config --global user.name "Piotr Zalewski"
@@ -163,7 +166,9 @@ cp .zshrc $HOME/.zshrc
 
 mkdir -p ~/.config
 
-touch ~/.config/lazygit/config.yml
+# Lazygit
+rm -rf ~/.config/lazygit || true
+cp -r lazygit ~/.config/lazygit
 
 # Install formatters for nvim
 pipx install isort

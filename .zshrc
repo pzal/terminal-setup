@@ -143,6 +143,18 @@ alias dcb='devcontainer build --workspace-folder .'
 dce () {
     WORKSPACE_FOLDER=$(pwd)
     CONTAINER_ID=$(docker ps -q --filter "label=devcontainer.local_folder=${WORKSPACE_FOLDER}")
+    
+    # Mount SSH keys if they exist
+    if [ -d "$HOME/.ssh" ]; then
+        docker cp "$HOME/.ssh" "$CONTAINER_ID:/root/"
+    fi
+
+    # Mount claude keys and config if they exist
+    if [ -d "$HOME/.claude" ]; then
+        docker cp "$HOME/.claude" "$CONTAINER_ID:/root/"
+        docker cp "$HOME/.claude.json" "$CONTAINER_ID:/root/.claude.json"
+    fi
+    
     docker exec --detach-keys='ctrl-q,q' -ti $CONTAINER_ID bash -c "git config --global --add safe.directory \$(pwd) && curl -fsSL https://raw.githubusercontent.com/pzal/terminal-setup/main/install.sh | bash; exec zsh"
 }
 
@@ -153,3 +165,4 @@ dcel () {
 }
 
 export LANG=C.UTF-8
+
