@@ -237,8 +237,7 @@ require('lazy').setup({
       --   topdelete = { text = '‾' },
       --   changedelete = { text = '~' },
       -- },
-    },
-    on_attach = function(bufnr)
+      on_attach = function(bufnr)
       local gitsigns = require 'gitsigns'
 
       local function map(mode, l, r, opts)
@@ -302,7 +301,8 @@ require('lazy').setup({
 
       -- Text object
       map({ 'o', 'x' }, 'ih', gitsigns.select_hunk, { desc = 'Select hunk' })
-    end,
+      end,
+    },
   },
 
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
@@ -1303,3 +1303,4 @@ require('lazy').setup({
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
+
