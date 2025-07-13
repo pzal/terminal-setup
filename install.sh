@@ -173,6 +173,8 @@ cp -r lazygit ~/.config/lazygit
 # Install formatters for nvim
 pipx install isort
 pipx install black
+npm install --global @biomejs/biome
+npm install --global prettier
 
 # Setup up neovim
 echo "Setting up neovim…"
