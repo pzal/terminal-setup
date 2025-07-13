@@ -139,8 +139,9 @@ esac
 
 alias dcup='devcontainer up --remove-existing-container --workspace-folder .'
 alias dcb='devcontainer build --workspace-folder .'
+alias dce='devcontainer exec --workspace-folder .'
 
-dce () {
+dcef () {
     WORKSPACE_FOLDER=$(pwd)
     CONTAINER_ID=$(docker ps -q --filter "label=devcontainer.local_folder=${WORKSPACE_FOLDER}")
     
