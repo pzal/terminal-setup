@@ -139,7 +139,6 @@ esac
 
 alias dcup='devcontainer up --remove-existing-container --workspace-folder .'
 alias dcb='devcontainer build --workspace-folder .'
-alias dce='devcontainer exec --workspace-folder .'
 
 dcef () {
     WORKSPACE_FOLDER=$(pwd)
@@ -159,10 +158,10 @@ dcef () {
     docker exec --detach-keys='ctrl-q,q' -ti $CONTAINER_ID bash -c "git config --global --add safe.directory \$(pwd) && curl -fsSL https://raw.githubusercontent.com/pzal/terminal-setup/main/install.sh | bash; exec zsh"
 }
 
-dcel () {
+dce () {
     WORKSPACE_FOLDER=$(pwd)
     CONTAINER_ID=$(docker ps -q --filter "label=devcontainer.local_folder=${WORKSPACE_FOLDER}")
-    docker exec --detach-keys='ctrl-q,q' -ti $CONTAINER_ID bash
+    docker exec --detach-keys='ctrl-q,q' -ti $CONTAINER_ID "$@"
 }
 
 export LANG=C.UTF-8
