@@ -140,15 +140,15 @@ dcef () {
     WORKSPACE_FOLDER=$(pwd)
     CONTAINER_ID=$(docker ps -q --filter "label=devcontainer.local_folder=${WORKSPACE_FOLDER}")
     
-    # Mount SSH keys if they exist
+    CONTAINER_HOME=$(docker exec $CONTAINER_ID sh -c 'echo $HOME')
+    
     if [ -d "$HOME/.ssh" ]; then
-        docker cp "$HOME/.ssh" "$CONTAINER_ID:/root/"
+        docker cp "$HOME/.ssh" "$CONTAINER_ID:$CONTAINER_HOME/"
     fi
 
-    # Mount claude keys and config if they exist
     if [ -d "$HOME/.claude" ]; then
-        docker cp "$HOME/.claude" "$CONTAINER_ID:/root/"
-        docker cp "$HOME/.claude.json" "$CONTAINER_ID:/root/.claude.json"
+        docker cp "$HOME/.claude" "$CONTAINER_ID:$CONTAINER_HOME/"
+        docker cp "$HOME/.claude.json" "$CONTAINER_ID:$CONTAINER_HOME/.claude.json"
     fi
     
     docker exec --detach-keys='ctrl-q,q' -ti $CONTAINER_ID bash -c "git config --global --add safe.directory \$(pwd) && curl -fsSL https://raw.githubusercontent.com/pzal/terminal-setup/main/install.sh | bash; exec zsh"
