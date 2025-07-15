@@ -132,19 +132,6 @@ if [[ "$(uname)" == "Linux" ]]; then
   fi
 fi
 
-# Download and install Oh My Zsh
-echo "Installing Oh My Zsh..."
-if [ -d "$HOME/.oh-my-zsh" ]; then
-  echo "Oh My Zsh is already installed. Skipping this step."
-else
-  if ! sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended; then
-    warn "Failed to install Oh My Zsh."
-  else
-    echo "Successfully installed Oh My Zsh."
-  fi
-fi
-git clone https://github.com/jeffreytse/zsh-vi-mode $HOME/.oh-my-zsh/custom/plugins/zsh-vi-mode || true
-
 # Node
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
 \. "$HOME/.nvm/nvm.sh" # in lieu of restarting the shell
