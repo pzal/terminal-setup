@@ -1,20 +1,10 @@
-export ZSH="$HOME/.oh-my-zsh"
-
-ZSH_THEME="intheloop"
-
-export UPDATE_ZSH_DAYS=30
-
-plugins=(
-    colored-man-pages
-    # docker
-    # docker-compose
-    # zsh-vi-mode
-)
-
-source $ZSH/oh-my-zsh.sh
 if [[ "$(uname)" == "Darwin" ]]; then
   source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 fi
+
+NEWLINE=$'\n'
+RPROMPT="%F{024}%*%f"
+PROMPT="${NEWLINE}%F{028}%B%n%b%f@%F{024}%B%m%b%f %F{240}%~%f ${NEWLINE}%F{024}%B>%b%f "
 
 
 export EDITOR="nvim"
