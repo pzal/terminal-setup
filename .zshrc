@@ -12,6 +12,9 @@ export VISUAL="$EDITOR"
 export GIT_EDITOR="$EDITOR"
 
 
+alias ls='ls --color'
+
+
 # git
 alias gits='git status'
 alias gitp='git pull'
