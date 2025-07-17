@@ -22,6 +22,10 @@ alias gitc='git checkout'
 alias gitl='git log'
 
 
+# fzf for command history
+source <(fzf --zsh)
+
+
 # History
 HISTFILE=~/.zsh_history
 HISTSIZE=1000000
