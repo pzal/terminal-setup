@@ -23,6 +23,7 @@ alias gitl='git log'
 
 
 # fzf for command history
+export PATH="${PATH:+${PATH}:}${HOME}/.fzf/bin"
 source <(fzf --zsh)
 
 
