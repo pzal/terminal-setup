@@ -133,10 +133,12 @@ if [[ "$(uname)" == "Linux" ]]; then
 fi
 
 # fzf
+rm -rf ~/.fzf || true
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 ~/.fzf/install --bin
 
 # Tab completion
+rm -rf ~/.zsh || true
 mkdir -p ~/.zsh
 git clone --depth 1 -- https://github.com/marlonrichert/zsh-autocomplete.git ~/.zsh/zsh-completions
 
