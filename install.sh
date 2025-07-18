@@ -132,6 +132,10 @@ if [[ "$(uname)" == "Linux" ]]; then
   fi
 fi
 
+# fzf
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+~/.fzf/install --bin
+
 # Node
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
 \. "$HOME/.nvm/nvm.sh" # in lieu of restarting the shell
