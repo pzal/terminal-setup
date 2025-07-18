@@ -140,7 +140,7 @@ git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 # Tab completion
 rm -rf ~/.zsh || true
 mkdir -p ~/.zsh
-git clone --depth 1 -- https://github.com/marlonrichert/zsh-autocomplete.git ~/.zsh/zsh-autocomplete
+git clone --depth 1 https://github.com/marlonrichert/zsh-autocomplete.git ~/.zsh/zsh-autocomplete
 
 # Node
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
