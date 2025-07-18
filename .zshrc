@@ -38,6 +38,7 @@ bindkey "$terminfo[kcbt]" menu-select
 bindkey -M menuselect              '^I'         menu-complete
 bindkey -M menuselect "$terminfo[kcbt]" reverse-menu-complete
 bindkey -M menuselect '^M' .accept-line
+zstyle ':autocomplete:*' delay 600  # Essentially wait until a manual <tab>
 
 
 # History
