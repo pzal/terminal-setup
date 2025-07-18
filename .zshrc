@@ -22,9 +22,22 @@ alias gitc='git checkout'
 alias gitl='git log'
 
 
+# Vi mode
+set -o vi
+
+
 # fzf for command history
 export PATH="${PATH:+${PATH}:}${HOME}/.fzf/bin"
 source <(fzf --zsh)
+
+
+# Tab completion
+source ~/.zsh/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+bindkey              '^I' menu-select
+bindkey "$terminfo[kcbt]" menu-select
+bindkey -M menuselect              '^I'         menu-complete
+bindkey -M menuselect "$terminfo[kcbt]" reverse-menu-complete
+bindkey -M menuselect '^M' .accept-line
 
 
 # History
@@ -120,8 +133,6 @@ n ()
     }
 }
 
-# Vi mode
-set -o vi
 
 # pnpm
 export PNPM_HOME="/Users/pzal/Library/pnpm"
