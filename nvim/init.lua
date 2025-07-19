@@ -768,6 +768,7 @@ require('lazy').setup({
         'stylua', -- Used to format Lua code
         'biome', -- Used for JavaScript/TypeScript LSP and formatting
         'prettier', -- Used for HTML and other web formatting
+        'xmlformatter'
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -832,7 +833,7 @@ require('lazy').setup({
         ['jsonc'] = { 'biome' },
         ['css'] = { 'biome' },
         ['html'] = { 'prettier' },
-        ['xml'] = { 'prettier' },
+        ['xml'] = { 'xmlformatter' },
         ['yaml'] = { 'prettier' },
         ['yml'] = { 'prettier' },
         ['markdown'] = { 'prettier' },
