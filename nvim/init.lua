@@ -768,7 +768,7 @@ require('lazy').setup({
         'stylua', -- Used to format Lua code
         'biome', -- Used for JavaScript/TypeScript LSP and formatting
         'prettier', -- Used for HTML and other web formatting
-        'xmlformatter'
+        'xmlformatter',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -803,43 +803,34 @@ require('lazy').setup({
         desc = '[F]ormat buffer',
       },
     },
-    opts = {
-      notify_on_error = false,
-      -- format_on_save = function(bufnr)
-      --   -- Disable "format_on_save lsp_fallback" for languages that don't
-      --   -- have a well standardized coding style. You can add additional
-      --   -- languages here or re-enable it for the disabled ones.
-      --   local disable_filetypes = { c = true, cpp = true }
-      --   if disable_filetypes[vim.bo[bufnr].filetype] then
-      --     return nil
-      --   else
-      --     return {
-      --       timeout_ms = 500,
-      --       lsp_format = 'fallback',
-      --     }
-      --   end
-      -- end,
-      format_on_save = false,
-      formatters_by_ft = {
-        lua = { 'stylua' },
-        python = { 'isort', 'black' },
-        ['javascript'] = { 'biome' },
-        ['javascriptreact'] = { 'biome' },
-        ['jsx'] = { 'biome' },
-        ['typescript'] = { 'biome' },
-        ['typescriptreact'] = { 'biome' },
-        ['tsx'] = { 'biome' },
-        ['json'] = { 'biome' },
-        ['jsonc'] = { 'biome' },
-        ['css'] = { 'biome' },
-        ['html'] = { 'prettier' },
-        ['xml'] = { 'xmlformatter' },
-        ['yaml'] = { 'prettier' },
-        ['yml'] = { 'prettier' },
-        ['markdown'] = { 'prettier' },
-        ['md'] = { 'prettier' },
-      },
-    },
+    config = function()
+      require('conform').setup {
+        notify_on_error = false,
+        format_on_save = false,
+        formatters_by_ft = {
+          lua = { 'stylua' },
+          python = { 'isort', 'black' },
+          ['javascript'] = { 'biome' },
+          ['javascriptreact'] = { 'biome' },
+          ['jsx'] = { 'biome' },
+          ['typescript'] = { 'biome' },
+          ['typescriptreact'] = { 'biome' },
+          ['tsx'] = { 'biome' },
+          ['json'] = { 'biome' },
+          ['jsonc'] = { 'biome' },
+          ['css'] = { 'biome' },
+          ['html'] = { 'prettier' },
+          ['xml'] = { 'xmlformatter' },
+          ['yaml'] = { 'prettier' },
+          ['yml'] = { 'prettier' },
+          ['markdown'] = { 'prettier' },
+          ['md'] = { 'prettier' },
+        },
+      }
+      require('conform').formatters.xmlformatter = {
+        prepend_args = { '--blanks' },
+      }
+    end,
   },
 
   { -- Autocompletion
