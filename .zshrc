@@ -148,12 +148,12 @@ esac
 alias dcup='devcontainer up --remove-existing-container --workspace-folder .'
 alias dcb='devcontainer build --workspace-folder .'
 
-dcef () {
+_dc_init () {
     WORKSPACE_FOLDER=$(pwd)
     CONTAINER_ID=$(docker ps -q --filter "label=devcontainer.local_folder=${WORKSPACE_FOLDER}")
     
     CONTAINER_HOME=$(docker exec $CONTAINER_ID sh -c 'echo $HOME')
-    
+
     if [ -d "$HOME/.ssh" ]; then
         docker cp "$HOME/.ssh" "$CONTAINER_ID:$CONTAINER_HOME/"
     fi
@@ -162,13 +162,22 @@ dcef () {
         docker cp "$HOME/.claude" "$CONTAINER_ID:$CONTAINER_HOME/"
         docker cp "$HOME/.claude.json" "$CONTAINER_ID:$CONTAINER_HOME/.claude.json"
     fi
-    
-    docker exec --detach-keys='ctrl-q,q' -ti $CONTAINER_ID bash -c "git config --global --add safe.directory \$(pwd) && curl -fsSL https://raw.githubusercontent.com/pzal/terminal-setup/main/install.sh | bash; exec zsh"
+}
+
+dcef () {
+    _dc_init
+    docker exec $CONTAINER_ID bash -c "git config --global --add safe.directory \$(pwd) && curl -fsSL https://raw.githubusercontent.com/pzal/terminal-setup/main/install.sh | bash"
+    docker exec --detach-keys='ctrl-q,q' -ti $CONTAINER_ID zsh
+}
+
+dcem () {
+    _dc_init
+    docker exec $CONTAINER_ID bash -c "sudo apt update && sudo apt install -y tmux neovim"
+    docker exec --detach-keys='ctrl-q,q' -ti $CONTAINER_ID zsh
 }
 
 dce () {
-    WORKSPACE_FOLDER=$(pwd)
-    CONTAINER_ID=$(docker ps -q --filter "label=devcontainer.local_folder=${WORKSPACE_FOLDER}")
+    _dc_init
     docker exec --detach-keys='ctrl-q,q' -ti $CONTAINER_ID "$@"
 }
 
