@@ -29,13 +29,28 @@ vim.o.mouse = 'a'
 vim.o.showmode = false
 vim.o.foldenable = false
 
--- Sync clipboard between OS and Neovim.
+-- Let neovim write to system clipbaord, but not read from it.
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
 vim.schedule(function()
   vim.o.clipboard = 'unnamedplus'
   -- vim.g.clipboard = 'osc52'
+  vim.g.clipboard = {
+    name = 'OSC 52',
+    copy = {
+      ['+'] = require('vim.ui.clipboard.osc52').copy '+',
+      ['*'] = require('vim.ui.clipboard.osc52').copy '*',
+    },
+    paste = {
+      ['+'] = function()
+        return {}
+      end,
+      ['*'] = function()
+        return {}
+      end,
+    },
+  }
 end)
 
 -- Enable break indent
