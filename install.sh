@@ -182,7 +182,7 @@ nvim --headless "+Lazy! sync" +qa
 # Setup tmux
 echo "Setting up tmux…"
 rm -rf ~/.config/tmux || true
-cp -r tmux ~/.config/tmux
+cp -r tmux_minimal ~/.config/tmux
 
 # Setup kitty
 echo "Setting up kitty…"
