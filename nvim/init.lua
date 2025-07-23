@@ -38,7 +38,7 @@ vim.schedule(function()
   vim.keymap.set('n', '<leader>p', function()
     vim.fn.setreg('+', vim.fn.getreg '"')
     print 'Copied to system clipboard'
-  end)
+  end, { desc = 'Sync unnamed register with system clipboard' })
 end)
 
 -- Enable break indent
