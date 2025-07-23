@@ -1,20 +1,3 @@
---[[
-    If you don't know anything about Lua, I recommend taking some time to read through
-    a guide. One possible example which will only take 10-15 minutes:
-      - https://learnxinyminutes.com/docs/lua/
-
-    After understanding a bit more about Lua, you can use `:help lua-guide` as a
-    reference for how Neovim integrates Lua.
-    - :help lua-guide
-    - (or HTML version): https://neovim.io/doc/user/lua-guide.html
-
-  Next, run AND READ `:help`.
-    This will open up a help window with some basic information
-    about reading, navigating and searching the builtin help documentation.
-
-If you experience any errors while trying to install kickstart, run `:checkhealth` for more info.
---]]
-
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 vim.g.have_nerd_font = true
@@ -34,7 +17,7 @@ vim.o.foldenable = false
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
 vim.schedule(function()
-  vim.o.clipboard = 'unnamedplus'
+  -- vim.o.clipboard = 'unnamedplus'
   -- vim.g.clipboard = 'osc52'
   vim.g.clipboard = {
     name = 'OSC 52',
@@ -51,6 +34,11 @@ vim.schedule(function()
       end,
     },
   }
+
+  vim.keymap.set('n', '<leader>p', function()
+    vim.fn.setreg('+', vim.fn.getreg '"')
+    print 'Copied to system clipboard'
+  end)
 end)
 
 -- Enable break indent
@@ -1154,25 +1142,6 @@ require('lazy').setup({
           Snacks.lazygit()
         end,
         desc = 'Lazygit',
-      },
-    },
-  },
-  {
-    'gbprod/yanky.nvim',
-    opts = {
-      -- your configuration comes here
-      -- or leave it empty to use the default settings
-      -- refer to the configuration section below
-    },
-    dependencies = { 'folke/snacks.nvim' },
-    keys = {
-      {
-        '<leader>p',
-        function()
-          Snacks.picker.yanky()
-        end,
-        mode = { 'n', 'x' },
-        desc = 'Open Yank History',
       },
     },
   },
