@@ -35,10 +35,8 @@ source <(fzf --zsh)
 source ~/.zsh/zsh-autocomplete/zsh-autocomplete.plugin.zsh
 bindkey              '^I' menu-select
 bindkey "$terminfo[kcbt]" menu-select
-bindkey -M menuselect              '^I'         menu-complete
-bindkey -M menuselect "$terminfo[kcbt]" reverse-menu-complete
-#bindkey -M menuselect '^M' .accept-line
-zstyle ':autocomplete:*' delay 600  # Essentially wait until a manual <tab>
+bindkey -M menuselect  '^[[D' .backward-char  '^[OD' .backward-char
+bindkey -M menuselect  '^[[C'  .forward-char  '^[OC'  .forward-char
 
 
 # History
