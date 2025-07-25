@@ -1,0 +1,114 @@
+_dc_init() {
+    WORKSPACE_FOLDER=$(pwd)
+    CONTAINER_ID=$(docker ps -q --filter "label=devcontainer.local_folder=${WORKSPACE_FOLDER}")
+}
+
+_dc_init_extra() {
+    CONTAINER_HOME=$(docker exec $CONTAINER_ID sh -c 'echo $HOME')
+    if [ -d "$HOME/.ssh" ]; then
+        docker cp "$HOME/.ssh" "$CONTAINER_ID:$CONTAINER_HOME/"
+    fi
+    if [ -d "$HOME/.claude" ]; then
+        docker cp "$HOME/.claude" "$CONTAINER_ID:$CONTAINER_HOME/"
+        docker cp "$HOME/.claude.json" "$CONTAINER_ID:$CONTAINER_HOME/.claude.json"
+    fi
+    docker exec $CONTAINER_ID bash -c "git config --global --add safe.directory \$(pwd) && curl -fsSL https://raw.githubusercontent.com/pzal/terminal-setup/main/install.sh | bash"
+}
+
+dc() {
+    local cmd="$1"
+    local subcmd="$2"
+
+    case "$cmd" in
+        "up")
+            devcontainer up --remove-existing-container --workspace-folder .
+            ;;
+        "build")
+            devcontainer build --workspace-folder .
+            ;;
+        "exec")
+            shift 2
+            case "$subcmd" in
+                "full")
+                    _dc_init
+                    _dc_init_extra
+                    docker exec --detach-keys='ctrl-q,q' -ti $CONTAINER_ID zsh
+                    ;;
+                "raw")
+                    _dc_init
+                    docker exec $CONTAINER_ID bash -c "sudo apt update && sudo apt install -y tmux neovim"
+                    docker exec --detach-keys='ctrl-q,q' -ti $CONTAINER_ID "$@"
+                    ;;
+                *)
+                    echo "Usage: dc exec <full|raw> [args...]"
+                    return 1
+                    ;;
+            esac
+            ;;
+        "sshserver")
+            shift 2
+            case "$subcmd" in
+                "launch")
+                    if [[ -z "$1" ]]; then
+                        echo "Usage: dc sshserver launch <port>"
+                        return 1
+                    fi
+                    _dc_init
+                    _dc_init_extra
+                    docker exec $CONTAINER_ID bash -c "sudo apt install -y openssh-server && sudo mkdir -p /run/sshd && sudo /usr/sbin/sshd -D -p $1"
+                    ;;
+                "forward")
+                    if [[ -z "$1" || -z "$2" ]]; then
+                        echo "Usage: dc sshserver forward <host> <port>"
+                        return 1
+                    fi
+                    ssh -L $2:localhost:$2 $1 sleep infinity
+                    ;;
+                *)
+                    echo "Usage: dc sshserver <launch|forward> [args...]"
+                    return 1
+                    ;;
+            esac
+            ;;
+        ""|*)
+            echo "Usage: dc <command> [subcommand] [args...]"
+            echo ""
+            echo "Commands:"
+            echo "  up                        - Start devcontainer (remove existing)"
+            echo "  build                     - Build devcontainer"
+            echo "  exec full                 - Execute with full setup (zsh)"
+            echo "  exec raw [cmd...]         - Execute raw (install tmux/neovim)"
+            echo "  sshserver launch <port>   - Start SSH server on port"
+            echo "  sshserver forward <host> <port> - SSH forward"
+            if [[ -n "$cmd" ]]; then
+                echo ""
+                echo "Unknown command: $cmd"
+            fi
+            return 1
+            ;;
+    esac
+}
+
+_dc_completion() {
+    local cur prev commands subcommands
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+    commands="up build exec sshserver"
+
+    if [[ ${COMP_CWORD} == 1 ]]; then
+        COMPREPLY=($(compgen -W "${commands}" -- ${cur}))
+    elif [[ ${COMP_CWORD} == 2 ]]; then
+        case "${COMP_WORDS[1]}" in
+            "exec")
+                subcommands="full raw"
+                COMPREPLY=($(compgen -W "${subcommands}" -- ${cur}))
+                ;;
+            "sshserver")
+                subcommands="launch forward"
+                COMPREPLY=($(compgen -W "${subcommands}" -- ${cur}))
+                ;;
+        esac
+    fi
+}
+
+complete -F _dc_completion dc

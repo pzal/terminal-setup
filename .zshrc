@@ -142,57 +142,7 @@ esac
 # pnpm end
 
 # Devcontainers
-
-alias dcup='devcontainer up --remove-existing-container --workspace-folder .'
-alias dcb='devcontainer build --workspace-folder .'
-
-_dc_init () {
-    WORKSPACE_FOLDER=$(pwd)
-    CONTAINER_ID=$(docker ps -q --filter "label=devcontainer.local_folder=${WORKSPACE_FOLDER}")
-    
-    CONTAINER_HOME=$(docker exec $CONTAINER_ID sh -c 'echo $HOME')
-
-    if [ -d "$HOME/.ssh" ]; then
-        docker cp "$HOME/.ssh" "$CONTAINER_ID:$CONTAINER_HOME/"
-    fi
-
-    if [ -d "$HOME/.claude" ]; then
-        docker cp "$HOME/.claude" "$CONTAINER_ID:$CONTAINER_HOME/"
-        docker cp "$HOME/.claude.json" "$CONTAINER_ID:$CONTAINER_HOME/.claude.json"
-    fi
-}
-
-_dc_init_extra() {
-    docker exec $CONTAINER_ID bash -c "git config --global --add safe.directory \$(pwd) && curl -fsSL https://raw.githubusercontent.com/pzal/terminal-setup/main/install.sh | bash"
-}
-
-dcef () {
-    _dc_init
-    _dc_init_extra
-    docker exec --detach-keys='ctrl-q,q' -ti $CONTAINER_ID zsh
-}
-
-dcem () {
-    _dc_init
-    docker exec $CONTAINER_ID bash -c "sudo apt update && sudo apt install -y tmux neovim"
-    docker exec --detach-keys='ctrl-q,q' -ti $CONTAINER_ID zsh
-}
-
-dcs () {
-    if [[ -z "$1" ]]; then
-        echo "Usage: dcs <port>"
-        return 1
-    fi
-
-    _dc_init
-    _dc_init_extra
-    docker exec $CONTAINER_ID bash -c "sudo apt install -y openssh-server && sudo mkdir -p /run/sshd && sudo /usr/sbin/sshd -D -p $1"
-}
-
-dce () {
-    _dc_init
-    docker exec --detach-keys='ctrl-q,q' -ti $CONTAINER_ID "$@"
-}
+source ~/dc_cli
 
 export LANG=C.UTF-8
 

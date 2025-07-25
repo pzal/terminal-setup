@@ -160,6 +160,7 @@ git config --global user.email "mail@pzalewski.com"
 
 # Copy new .zshrc
 cp .zshrc $HOME/.zshrc
+cp dc_cli $HOME/dc_cli
 
 mkdir -p ~/.config
 
