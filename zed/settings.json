@@ -40,6 +40,12 @@
         "editor::Format", {}
       ]
     }
+  },
+  {
+    "context": "vim_mode == normal",
+    "bindings": {
+      "space d d": "editor::ToggleDiagnostics"
+    }
   }
 ]
 
