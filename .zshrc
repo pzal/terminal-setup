@@ -162,9 +162,13 @@ _dc_init () {
     fi
 }
 
+_dc_init_extra() {
+    docker exec $CONTAINER_ID bash -c "git config --global --add safe.directory \$(pwd) && curl -fsSL https://raw.githubusercontent.com/pzal/terminal-setup/main/install.sh | bash"
+}
+
 dcef () {
     _dc_init
-    docker exec $CONTAINER_ID bash -c "git config --global --add safe.directory \$(pwd) && curl -fsSL https://raw.githubusercontent.com/pzal/terminal-setup/main/install.sh | bash"
+    _dc_init_extra
     docker exec --detach-keys='ctrl-q,q' -ti $CONTAINER_ID zsh
 }
 
@@ -174,10 +178,22 @@ dcem () {
     docker exec --detach-keys='ctrl-q,q' -ti $CONTAINER_ID zsh
 }
 
+dcs () {
+    if [[ -z "$1" ]]; then
+        echo "Usage: dcs <port>"
+        return 1
+    fi
+
+    _dc_init
+    _dc_init_extra
+    docker exec $CONTAINER_ID bash -c "sudo apt install -y openssh-server && sudo mkdir -p /run/sshd && sudo /usr/sbin/sshd -D -p $1"
+}
+
 dce () {
     _dc_init
     docker exec --detach-keys='ctrl-q,q' -ti $CONTAINER_ID "$@"
 }
 
 export LANG=C.UTF-8
+
 

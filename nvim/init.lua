@@ -18,22 +18,22 @@ vim.o.foldenable = false
 --  See `:help 'clipboard'`
 vim.schedule(function()
   vim.o.clipboard = 'unnamed'
-  -- vim.g.clipboard = 'osc52'
-  vim.g.clipboard = {
-    name = 'OSC 52',
-    copy = {
-      ['+'] = require('vim.ui.clipboard.osc52').copy '+',
-      ['*'] = require('vim.ui.clipboard.osc52').copy '*',
-    },
-    paste = {
-      ['+'] = function()
-        return {}
-      end,
-      ['*'] = function()
-        return {}
-      end,
-    },
-  }
+  vim.g.clipboard = 'osc52'
+  -- vim.g.clipboard = {
+  --   name = 'OSC 52',
+  --   copy = {
+  --     ['+'] = require('vim.ui.clipboard.osc52').copy '+',
+  --     ['*'] = require('vim.ui.clipboard.osc52').copy '*',
+  --   },
+  --   paste = {
+  --     ['+'] = function()
+  --       return {}
+  --     end,
+  --     ['*'] = function()
+  --       return {}
+  --     end,
+  --   },
+  -- }
 
   vim.keymap.set('n', '<leader>p', function()
     vim.fn.setreg('+', vim.fn.getreg '"')
