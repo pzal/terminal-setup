@@ -179,6 +179,11 @@ rm -rf ~/.config/nvim || true
 cp -r nvim ~/.config/nvim
 nvim --headless "+Lazy! sync" +qa
 
+# Setup up zed
+echo "Setting up zed…"
+rm -rf ~/.config/zed || true
+cp -r zed ~/.config/zed
+
 # Setup tmux
 echo "Setting up tmux…"
 rm -rf ~/.config/tmux || true
