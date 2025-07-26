@@ -2,13 +2,16 @@
   {
     "context": "(Editor && showing_completions)",
     "bindings": {
-      "ctrl-space": [
-        "editor::ConfirmCompletion",
-        {}
-      ],
+      "ctrl-space": ["editor::ConfirmCompletion", {}],
       "enter": "editor::Newline",
+      "tab": "editor::Tab"
+    }
+  },
+  {
+    "context": "(Editor && edit_prediction)",
+    "bindings": {
+      "ctrl-space": "editor::AcceptEditPrediction",
       "tab": "editor::Tab"
     }
   }
 ]
-
