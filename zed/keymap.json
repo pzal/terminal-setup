@@ -1,10 +1,3 @@
-// Zed keymap
-//
-// For information on binding keys, see the Zed
-// documentation: https://zed.dev/docs/key-bindings
-//
-// To see the default key bindings run `zed: open default keymap`
-// from the command palette.
 [
   {
     "context": "(Editor && showing_completions)",
@@ -14,52 +7,7 @@
         {}
       ],
       "enter": "editor::Newline",
-    "tab": "editor::Tab"
-    }
-  },
-  {
-    "context": "(EmptyPane || vim_mode == normal)",
-    "bindings": {
-      "space space": [
-        "file_finder::Toggle", {}
-      ]
-    }
-  },
-  {
-    "context": "(EmptyPane || vim_mode == normal)",
-    "bindings": {
-      "space s g": [
-        "pane::DeploySearch", {}
-      ]
-    }
-  },
-  {
-    "context": "(EmptyPane || vim_mode == normal)",
-    "bindings": {
-      "space f": [
-        "editor::Format", {}
-      ]
-    }
-  },
-    {
-    "context": "!ContextEditor > (Editor && mode == full && vim_mode == normal)",
-    "bindings": {
-      "space e": [
-        "pane::RevealInProjectPanel",
-        {}
-      ]
-    }
-  },
-  {
-    "context": "AgentPanel && vim_mode == normal",
-    "bindings": {
-      "space e": "project_panel::ToggleFocus"
-    }
-  },
-  {
-    "context": "Workspace && vim_mode == normal",
-    "bindings": {
-      "space e": "project_panel::ToggleFocus"
+      "tab": "editor::Tab"
     }
   }
 ]
