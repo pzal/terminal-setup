@@ -12,6 +12,7 @@
         "calt": false
     },
     "restore_on_startup": "last_workspace",
+    "tab_size": 2,
     "relative_line_numbers": true,
     "ensure_final_newline_on_save": false,
     "format_on_save": "off",
