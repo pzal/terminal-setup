@@ -40,6 +40,27 @@
         "editor::Format", {}
       ]
     }
+  },
+    {
+    "context": "!ContextEditor > (Editor && mode == full && vim_mode == normal)",
+    "bindings": {
+      "space e": [
+        "pane::RevealInProjectPanel",
+        {}
+      ]
+    }
+  },
+  {
+    "context": "AgentPanel && vim_mode == normal",
+    "bindings": {
+      "space e": "project_panel::ToggleFocus"
+    }
+  },
+  {
+    "context": "Workspace && vim_mode == normal",
+    "bindings": {
+      "space e": "project_panel::ToggleFocus"
+    }
   }
 ]
 
