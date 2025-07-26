@@ -62,7 +62,7 @@ dc() {
                         echo "Usage: dc sshserver forward <host> <port>"
                         return 1
                     fi
-                    ssh -L $2:localhost:$2 $1 sleep infinity
+                    ssh -L ${2}:localhost:${2} $1 sleep infinity
                     ;;
                 *)
                     echo "Usage: dc sshserver <launch|forward> [args...]"
