@@ -13,6 +13,7 @@ export GIT_EDITOR="$EDITOR"
 
 
 alias ls='ls --color'
+alias glances='glances --theme-white'
 
 
 # git
