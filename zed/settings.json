@@ -15,7 +15,8 @@
 	"buffer_font_features": {
 		"calt": false
 	},
-	"tab_size": 2,
+        "seed_search_query_from_cursor": "selection",
+	"tab_size": 4,
 	"restore_on_startup": "last_workspace",
 	"relative_line_numbers": true,
 	"ensure_final_newline_on_save": false,
