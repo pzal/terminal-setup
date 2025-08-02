@@ -26,24 +26,13 @@ dc() {
         "build")
             devcontainer build --workspace-folder .
             ;;
+        "init")
+            _dc_init
+            _dc_init_extra
+            ;;
         "exec")
-            shift 2
-            case "$subcmd" in
-                "full")
-                    _dc_init
-                    _dc_init_extra
-                    docker exec --detach-keys='ctrl-q,q' -ti $CONTAINER_ID zsh
-                    ;;
-                "raw")
-                    _dc_init
-                    docker exec $CONTAINER_ID bash -c "sudo apt update && sudo apt install -y tmux neovim"
-                    docker exec --detach-keys='ctrl-q,q' -ti $CONTAINER_ID "$@"
-                    ;;
-                *)
-                    echo "Usage: dc exec <full|raw> [args...]"
-                    return 1
-                    ;;
-            esac
+            _dc_init
+            docker exec --detach-keys='ctrl-q,q' -ti $CONTAINER_ID "$@"
             ;;
         "sshserver")
             shift 2
@@ -54,7 +43,6 @@ dc() {
                         return 1
                     fi
                     _dc_init
-                    _dc_init_extra
                     docker exec $CONTAINER_ID bash -c "sudo apt install -y openssh-server && sudo mkdir -p /run/sshd && sudo /usr/sbin/sshd -D -p $1"
                     ;;
                 "forward")
@@ -72,14 +60,6 @@ dc() {
             ;;
         ""|*)
             echo "Usage: dc <command> [subcommand] [args...]"
-            echo ""
-            echo "Commands:"
-            echo "  up                        - Start devcontainer (remove existing)"
-            echo "  build                     - Build devcontainer"
-            echo "  exec full                 - Execute with full setup (zsh)"
-            echo "  exec raw [cmd...]         - Execute raw (install tmux/neovim)"
-            echo "  sshserver launch <port>   - Start SSH server on port"
-            echo "  sshserver forward <host> <port> - SSH forward"
             if [[ -n "$cmd" ]]; then
                 echo ""
                 echo "Unknown command: $cmd"
@@ -93,16 +73,12 @@ _dc_completion() {
     local cur prev commands subcommands
     cur="${COMP_WORDS[COMP_CWORD]}"
     prev="${COMP_WORDS[COMP_CWORD-1]}"
-    commands="up build exec sshserver"
+    commands="up build init exec sshserver"
 
     if [[ ${COMP_CWORD} == 1 ]]; then
         COMPREPLY=($(compgen -W "${commands}" -- ${cur}))
     elif [[ ${COMP_CWORD} == 2 ]]; then
         case "${COMP_WORDS[1]}" in
-            "exec")
-                subcommands="full raw"
-                COMPREPLY=($(compgen -W "${subcommands}" -- ${cur}))
-                ;;
             "sshserver")
                 subcommands="launch forward"
                 COMPREPLY=($(compgen -W "${subcommands}" -- ${cur}))
