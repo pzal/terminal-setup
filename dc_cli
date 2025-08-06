@@ -44,6 +44,7 @@ dc() {
                         return 1
                     fi
                     _dc_init
+		    _dc_init_extra
                     docker exec $CONTAINER_ID bash -c "sudo apt install -y openssh-server && sudo mkdir -p /run/sshd && sudo /usr/sbin/sshd -D -p $1"
                     ;;
                 "forward")
