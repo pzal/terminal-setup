@@ -15,7 +15,7 @@
 	"buffer_font_features": {
 		"calt": false
 	},
-        "seed_search_query_from_cursor": "selection",
+	"seed_search_query_from_cursor": "selection",
 	"tab_size": 4,
 	"restore_on_startup": "last_workspace",
 	"relative_line_numbers": true,
@@ -84,6 +84,7 @@
 	},
 	"languages": {
 		"Python": {
+			"tab_size": 4,
 			"language_servers": ["pyright", "ruff"],
 			"formatter": [
 				{
@@ -96,6 +97,9 @@
 					"language_server": { "name": "ruff" }
 				}
 			]
+		},
+		"YAML": {
+			"tab_size": 2
 		}
 	},
 	"auto_install_extensions": {
