@@ -178,7 +178,7 @@ npm install --global prettier
 echo "Setting up neovim…"
 rm -rf ~/.config/nvim || true
 cp -r nvim ~/.config/nvim
-nvim --headless "+Lazy! sync" +qa
+# nvim --headless "+Lazy! sync" +qa
 
 # Setup up zed
 echo "Setting up zed…"
