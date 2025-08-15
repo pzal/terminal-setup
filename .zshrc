@@ -24,7 +24,7 @@ alias gitl='git log'
 
 
 # Vi mode
-set -o vi
+# set -o vi
 
 
 # fzf for command history
