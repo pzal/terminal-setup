@@ -147,11 +147,9 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
 \. "$HOME/.nvm/nvm.sh" # in lieu of restarting the shell
 nvm install 22
 
-# Devcontainer CLI
 npm i --global @devcontainers/cli
-
-# Claude
-npm install -g @anthropic-ai/claude-code
+npm i --global @anthropic-ai/claude-code
+npm i --global @google/gemini-cli
 
 # Configure Git
 echo "Configuring Git..."
