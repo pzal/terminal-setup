@@ -133,7 +133,7 @@ if [[ "$(uname)" == "Linux" ]]; then
 fi
 
 # fzf
-sudo apt remove fzf || true
+sudo apt remove fzf -y || true
 rm -rf ~/.fzf || true
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 ~/.fzf/install --bin
