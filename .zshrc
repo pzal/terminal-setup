@@ -25,6 +25,7 @@ alias gitl='git log'
 
 # Vi mode
 # set -o vi
+set -o emacs
 
 
 # fzf for command history
