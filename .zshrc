@@ -34,11 +34,11 @@ source <(fzf --zsh)
 
 
 # Tab completion
-source ~/.zsh/zsh-autocomplete/zsh-autocomplete.plugin.zsh
-bindkey              '^I' menu-select
-bindkey "$terminfo[kcbt]" menu-select
-bindkey -M menuselect  '^[[D' .backward-char  '^[OD' .backward-char
-bindkey -M menuselect  '^[[C'  .forward-char  '^[OC'  .forward-char
+# source ~/.zsh/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+# bindkey              '^I' menu-select
+# bindkey "$terminfo[kcbt]" menu-select
+# bindkey -M menuselect  '^[[D' .backward-char  '^[OD' .backward-char
+# bindkey -M menuselect  '^[[C'  .forward-char  '^[OC'  .forward-char
 
 
 # History
@@ -121,6 +121,5 @@ esac
 source ~/dc_cli
 
 export LANG=C.UTF-8
-
 
 
