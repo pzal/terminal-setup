@@ -41,6 +41,11 @@ source <(fzf --zsh)
 # bindkey -M menuselect  '^[[C'  .forward-char  '^[OC'  .forward-char
 
 
+# Zsh completion which is case-insensitive
+autoload -Uz compinit && compinit
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+
+
 # History
 HISTFILE=~/.zsh_history
 HISTSIZE=1000000
