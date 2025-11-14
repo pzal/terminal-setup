@@ -11,6 +11,7 @@ export EDITOR="nvim"
 export VISUAL="$EDITOR"
 export GIT_EDITOR="$EDITOR"
 
+export PATH="$HOME/.local/bin:$PATH"
 
 alias ls='ls --color'
 alias glances='glances --theme-white'
@@ -78,8 +79,6 @@ if [[ "$(uname)" == "Darwin" ]]; then
   export PATH="$SUMO_HOME/bin:$PATH"
 fi
 
-# pipx stuff
-export PATH="$PATH:$HOME/.local/bin"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
