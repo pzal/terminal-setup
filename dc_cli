@@ -8,12 +8,8 @@ _dc_init_extra() {
     if [ -d "$HOME/.ssh" ]; then
         docker cp "$HOME/.ssh" "$CONTAINER_ID:$CONTAINER_HOME/"
     fi
-    if [ -d "$HOME/.claude" ]; then
-        docker cp "$HOME/.claude" "$CONTAINER_ID:$CONTAINER_HOME/"
-        docker cp "$HOME/.claude.json" "$CONTAINER_ID:$CONTAINER_HOME/.claude.json"
-    fi
     
-    docker exec $CONTAINER_ID sh -c 'sudo chown -R $(id -u):$(id -g) ~/.ssh ~/.claude ~/.claude.json'
+    docker exec $CONTAINER_ID sh -c 'sudo chown -R $(id -u):$(id -g) ~/.ssh'
     docker exec $CONTAINER_ID bash -c "git config --global --add safe.directory \$(pwd) && curl -fsSL https://raw.githubusercontent.com/pzal/terminal-setup/main/install.sh | bash"
 }
 
