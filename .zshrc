@@ -14,7 +14,6 @@ export GIT_EDITOR="$EDITOR"
 export PATH="$HOME/.local/bin:$PATH"
 
 alias ls='ls --color'
-alias glances='glances --theme-white'
 
 
 # git
