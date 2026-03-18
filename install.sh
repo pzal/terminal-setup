@@ -149,7 +149,7 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
 nvm install 22
 
 npm i --global @devcontainers/cli
-npm i --global @anthropic-ai/claude-code
+curl -fsSL https://claude.ai/install.sh | bash
 npm i --global @google/gemini-cli
 
 # Configure Git
@@ -174,15 +174,15 @@ npm install --global @biomejs/biome
 npm install --global prettier
 
 # Setup up neovim
-echo "Setting up neovim…"
-rm -rf ~/.config/nvim || true
-cp -r nvim ~/.config/nvim
+# echo "Setting up neovim…"
+# rm -rf ~/.config/nvim || true
+# cp -r nvim ~/.config/nvim
 # nvim --headless "+Lazy! sync" +qa
 
 # Setup up zed
-echo "Setting up zed…"
-rm -rf ~/.config/zed || true
-cp -r zed ~/.config/zed
+# echo "Setting up zed…"
+# rm -rf ~/.config/zed || true
+# cp -r zed ~/.config/zed
 
 # Setup tmux
 echo "Setting up tmux…"
@@ -190,9 +190,9 @@ rm -rf ~/.config/tmux || true
 cp -r tmux_minimal ~/.config/tmux
 
 # Setup kitty
-echo "Setting up kitty…"
-rm -rf ~/.config/kitty || true
-cp -r kitty ~/.config/kitty
+# echo "Setting up kitty…"
+# rm -rf ~/.config/kitty || true
+# cp -r kitty ~/.config/kitty
 
 # Save version to track successful completion
 if [ -n "$LATEST_COMMIT" ]; then
